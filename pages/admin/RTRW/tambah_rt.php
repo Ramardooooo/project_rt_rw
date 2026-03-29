@@ -37,7 +37,7 @@ if (isset($_POST['add_rt'])) {
             mysqli_stmt_bind_param($stmt, "ssi", $nama_rt, $ketua_rt_nama, $ketua_rt_id);
             if (mysqli_stmt_execute($stmt)) {
                 $success = "Data RT berhasil ditambahkan.";
-                header("Location: manage_rt_rw.php");
+                header("Location: manage_rt_rw");
                 exit();
             } else {
                 $error = "Gagal menambahkan data RT: " . mysqli_error($conn);
