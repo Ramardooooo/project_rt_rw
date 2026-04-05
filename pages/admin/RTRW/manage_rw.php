@@ -1,4 +1,5 @@
 <?php
+
 include '../../../config/database.php';
 
 if (isset($_POST['delete_rw'])) {
@@ -54,7 +55,7 @@ include '../../../layouts/admin/header.php';
 include '../../../layouts/admin/sidebar.php';
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    header("Location: ../../home.php");
+    header("Location: home");
     exit();
 }
 
@@ -63,11 +64,12 @@ $page = isset($_GET['p']) ? (int)$_GET['p'] : 1;
 $offset = ($page - 1) * $limit;
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-$where_clause = $search ? "LEFT JOIN warga w ON rw.ketua_rw_id = w.id WHERE rw.name LIKE '%$search%' OR w.nama LIKE '%$search%'" : "LEFT JOIN warga w ON rw.ketua_rw_id = w.id";
-$total_rw = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(rw.id) as total FROM rw $where_clause"))['total'];
+$where_clause = $search ? "WHERE rw.name LIKE '%$search%' OR w.nama LIKE '%$search%' OR rt.nama_rt LIKE '%$search%'" : "";
+$total_rw = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM (SELECT rw.id FROM rw LEFT JOIN rt ON rw.id = rt.id_rw LEFT JOIN warga w ON rt.id = w.rt $where_clause) as subquery"))['total'];
 $total_pages = max(1, ceil($total_rw / $limit));
 
-$rw = mysqli_query($conn, "SELECT rw.*, w.id as warga_id, w.nama as ketua_nama, w.nik FROM rw $where_clause LIMIT $limit OFFSET $offset");
+$rw_query = "SELECT rw.*, COUNT(DISTINCT rt.id) as jumlah_rt, COUNT(DISTINCT w.id) as jumlah_warga, w2.nama as ketua_nama, w2.nik FROM rw LEFT JOIN rt ON rw.id = rt.id_rw LEFT JOIN warga w ON rt.id = w.rt LEFT JOIN warga w2 ON rw.ketua_rw_id = w2.id $where_clause GROUP BY rw.id";
+$rw = mysqli_query($conn, $rw_query . " LIMIT $limit OFFSET $offset");
 ?>
 
 <div id="mainContent" class="ml-64 min-h-screen bg-gray-50">
@@ -90,7 +92,9 @@ $rw = mysqli_query($conn, "SELECT rw.*, w.id as warga_id, w.nama as ketua_nama, 
                 <tr>
                     <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">ID</th>
                     <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">Nama RW</th>
-    <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">Ketua RW</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">Ketua RW</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">Jumlah RT</th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">Jumlah Warga</th>
                     <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">Status</th>
                     <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">Actions</th>
                 </tr>
@@ -102,25 +106,20 @@ $rw = mysqli_query($conn, "SELECT rw.*, w.id as warga_id, w.nama as ketua_nama, 
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         <div class="flex items-center">
                             <?php
-$initial = isset($r['ketua_nama']) 
-    ? strtoupper(substr($r['ketua_nama'], 0, 1)) 
-    : strtoupper(substr($r['nama_rt'], 0, 1));
-
-$path = "../../../uploads/profiles/";
-$files = glob($path . "profile_" . $r['warga_id'] . "_*");
-
-if (!empty($files)) {
-    // ambil file pertama yang ketemu
-    $photo = $files[0];
-
-    echo '<img src="' . $photo . '" 
-    class="w-10 h-10 rounded-full object-cover shadow-lg mr-3 border-2 border-gray-200" alt="PP">';
-} else {
-    echo '<div class="w-10 h-10 rounded-full shadow-lg mr-3 border-2 border-gray-200 
-    flex items-center justify-center bg-blue-600 text-white font-bold">'
-    . $initial . '</div>';
-}
-?>
+                            $initial = isset($r['ketua_nama']) 
+                                ? strtoupper(substr($r['ketua_nama'], 0, 1)) 
+                                : strtoupper(substr($r['name'], 0, 1));
+                            $photo_path = get_profile_photo_path($r['profile_photo'] ?? '');
+                            $photo_src = $photo_path ?: '';
+                            if ($photo_src): ?>
+                                <img src="<?php echo htmlspecialchars($photo_src); ?>" 
+                                onerror="this.onerror=null; this.src='/PROJECT/uploads/profiles/default-avatar.png';"
+                                class="w-10 h-10 rounded-full object-cover shadow-lg mr-3 border-2 border-gray-200">
+                            <?php else: ?>
+                                <div class="w-10 h-10 rounded-full shadow-lg mr-3 border-2 border-gray-200 flex items-center justify-center bg-blue-600 text-white font-bold">
+                                    <?php echo $initial; ?>
+                                </div>
+                            <?php endif; ?>
                             <div>
                                 <div class="font-semibold"><?php echo htmlspecialchars($r['name']); ?></div>
                                 <?php if (isset($r['ketua_nama']) && $r['ketua_nama']): ?>
@@ -135,12 +134,13 @@ if (!empty($files)) {
                             <div class="text-xs text-gray-500"><?php echo htmlspecialchars($r['nik']); ?></div>
                         <?php endif; ?>
                     </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600"><?php echo ($r['jumlah_rt'] ?? 0); ?> RT</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600"><?php echo ($r['jumlah_warga'] ?? 0); ?> orang</td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <span class="px-3 py-1 rounded-full text-xs font-semibold shadow-md <?php echo isset($r['status']) && $r['status'] == 'aktif' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'; ?>">
                             <?php echo isset($r['status']) && $r['status'] == 'aktif' ? 'Aktif' : 'Tidak Aktif'; ?>
                         </span>
                     </td>
-
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div class="flex space-x-1">
                             <a href="edit_rw?id=<?php echo $r['id']; ?>" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-xs flex items-center">
@@ -154,8 +154,8 @@ if (!empty($files)) {
                             </form>
                             <form method="POST" class="inline" style="display:inline;">
                                 <input type="hidden" name="rw_id" value="<?php echo $r['id']; ?>">
-                                <button type="submit" name="delete_rw" class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-xs flex items-center" onclick="return confirm('Hapus RW ini?')" title="Delete">
-                                    <i class="fas fa-trash mr-1"></i>Hapus
+                                <button type="submit" name="delete_rw" class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-xs flex items-center" onclick="return confirm('Hapus RW ini?')">
+                                    <i class="fas fa-trash mr-1"></i>Delete
                                 </button>
                             </form>
                         </div>
@@ -166,27 +166,24 @@ if (!empty($files)) {
         </table>
     </div>
 
-    <?php if ($total_pages > 1): ?>
-    <div class="mt-6 flex justify-center">
-        <div class="flex space-x-1 bg-white p-2 rounded-xl shadow-lg border">
-            <?php if ($page > 1): ?>
-                <a href="?p=<?= $page - 1 ?>" class="px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition">‹ Prev</a>
-            <?php endif; ?>
+    <div class="mt-4 flex justify-center">
+        <?php if ($total_pages > 1): ?>
+            <div class="flex space-x-2 bg-white p-2 rounded-xl shadow-lg border">
+                <?php if ($page > 1): ?>
+                    <a href="?p=<?= $page - 1 ?>" class="px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition">‹ Previous</a>
+                <?php endif; ?>
 
-            <?php 
-            $start = max(1, $page - 2);
-            $end = min($total_pages, $page + 2);
-            for ($i = $start; $i <= $end; $i++): ?>
-                <a href="?p=<?= $i ?>" class="px-3 py-2 <?= $i == $page ? 'bg-green-500 text-white shadow-md' : 'text-gray-600 hover:bg-gray-100' ?> rounded-lg transition"><?= $i ?></a>
-            <?php endfor; ?>
+                <?php 
+                $start = max(1, $page - 2);
+                $end = min($total_pages, $page + 2);
+                for ($i = $start; $i <= $end; $i++): ?>
+                    <a href="?p=<?= $i ?>" class="px-3 py-2 <?= $i == $page ? 'bg-green-500 text-white shadow-md' : 'text-gray-600 hover:bg-gray-100' ?> rounded-lg transition"><?= $i ?></a>
+                <?php endfor; ?>
 
-            <?php if ($page < $total_pages): ?>
-                <a href="?p=<?= $page + 1 ?>" class="px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition">Next ›</a>
-            <?php endif; ?>
-        </div>
+                <?php if ($page < $total_pages): ?>
+                    <a href="?p=<?= $page + 1 ?>" class="px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition">Next ›</a>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     </div>
-    <?php endif; ?>
 </div>
-</div>
-
-

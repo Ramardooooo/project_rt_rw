@@ -12,6 +12,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
 
 if (isset($_POST['add_rt'])) {
     $nama_rt = $_POST['nama_rt'];
+    $id_rw = isset($_POST['rw_id']) ? (int)$_POST['rw_id'] : null;
     $ketua_rt_id = (int)$_POST['ketua_rt_id'];
 
     $check_nama_rt = mysqli_prepare($conn, "SELECT id FROM rt WHERE nama_rt = ?");
@@ -21,33 +22,51 @@ if (isset($_POST['add_rt'])) {
     if (mysqli_stmt_num_rows($check_nama_rt) > 0) {
         $error = "Nama RT sudah ada.";
     } else {
-        // Fetch ketua name for legacy ketua_rt field
-        $ketua_query = mysqli_prepare($conn, "SELECT nama FROM warga WHERE id = ? AND status = 'aktif'");
-        mysqli_stmt_bind_param($ketua_query, "i", $ketua_rt_id);
-        mysqli_stmt_execute($ketua_query);
-        $ketua_result = mysqli_stmt_get_result($ketua_query);
-        $ketua_data = mysqli_fetch_assoc($ketua_result);
-        $ketua_rt_nama = $ketua_data ? $ketua_data['nama'] : '';
-        mysqli_stmt_close($ketua_query);
-
-        if (empty($ketua_rt_nama)) {
-            $error = "Ketua RT tidak valid atau tidak aktif.";
-        } else {
-            $stmt = mysqli_prepare($conn, "INSERT INTO rt (nama_rt, ketua_rt, ketua_rt_id) VALUES (?, ?, ?)");
-            mysqli_stmt_bind_param($stmt, "ssi", $nama_rt, $ketua_rt_nama, $ketua_rt_id);
-            if (mysqli_stmt_execute($stmt)) {
-                $success = "Data RT berhasil ditambahkan.";
-                header("Location: manage_rt_rw");
-                exit();
+        // Check unique per RW
+        if ($id_rw) {
+            $check_rw = mysqli_prepare($conn, "SELECT id FROM rt WHERE nama_rt = ? AND id_rw = ?");
+            mysqli_stmt_bind_param($check_rw, "si", $nama_rt, $id_rw);
+            mysqli_stmt_execute($check_rw);
+            mysqli_stmt_store_result($check_rw);
+            if (mysqli_stmt_num_rows($check_rw) > 0) {
+                $error = "Nama RT ini sudah ada di RW yang dipilih.";
+                mysqli_stmt_close($check_rw);
             } else {
-                $error = "Gagal menambahkan data RT: " . mysqli_error($conn);
+                mysqli_stmt_close($check_rw);
+                goto insert_rt;
             }
-            mysqli_stmt_close($stmt);
+        } else {
+            goto insert_rt;
         }
     }
-    mysqli_stmt_close($check_nama_rt);
+insert_rt:
+    // Fetch ketua name for legacy ketua_rt field
+    $ketua_query = mysqli_prepare($conn, "SELECT nama FROM warga WHERE id = ? AND status = 'aktif'");
+    mysqli_stmt_bind_param($ketua_query, "i", $ketua_rt_id);
+    mysqli_stmt_execute($ketua_query);
+    $ketua_result = mysqli_stmt_get_result($ketua_query);
+    $ketua_data = mysqli_fetch_assoc($ketua_result);
+    $ketua_rt_nama = $ketua_data ? $ketua_data['nama'] : '';
+    mysqli_stmt_close($ketua_query);
+
+    if (empty($ketua_rt_nama)) {
+        $error = "Ketua RT tidak valid atau tidak aktif.";
+    } else {
+        $stmt = mysqli_prepare($conn, "INSERT INTO rt (nama_rt, id_rw, ketua_rt, ketua_rt_id) VALUES (?, ?, ?, ?)");
+        mysqli_stmt_bind_param($stmt, "sisi", $nama_rt, $id_rw, $ketua_rt_nama, $ketua_rt_id);
+        if (mysqli_stmt_execute($stmt)) {
+            $success = "Data RT berhasil ditambahkan.";
+            header("Location: manage_rt_rw");
+            exit();
+        } else {
+            $error = "Gagal menambahkan data RT: " . mysqli_error($conn);
+        }
+        mysqli_stmt_close($stmt);
+    }
 }
+if (isset($check_nama_rt)) mysqli_stmt_close($check_nama_rt);
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -84,6 +103,21 @@ if (isset($_POST['add_rt'])) {
                     required
                     class="w-full border rounded px-3 py-2 focus:outline-none focus:border-blue-500"
                 >
+            </div>
+
+            <div class="mb-3">
+                <label class="block text-sm text-gray-700 mb-1">
+                    RW Parent <span class="text-red-500">*</span>
+                </label>
+                <select name="rw_id" required class="w-full border rounded px-3 py-2 focus:outline-none focus:border-purple-500">
+                    <option value="">Pilih RW</option>
+                    <?php 
+                    $rw_list = mysqli_query($conn, "SELECT id, name FROM rw WHERE status = 'aktif' ORDER BY name ASC");
+                    while ($rw = mysqli_fetch_assoc($rw_list)): 
+                    ?>
+                        <option value="<?php echo $rw['id']; ?>"><?php echo htmlspecialchars($rw['name']); ?></option>
+                    <?php endwhile; ?>
+                </select>
             </div>
 
             <div class="mb-6">
