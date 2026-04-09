@@ -1,0 +1,51 @@
+<section id="hero" class="animate-on-scroll animate-fade-left relative py-20 bg-gradient-to-br from-blue-900/90 via-blue-800/90 to-blue-900/90 overflow-hidden" style="background-image: url('https://plus.unsplash.com/premium_photo-1661905195522-41da87e831d8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-position: center;">
+
+    <div class="relative max-w-7xl mx-auto px-6 text-center">
+        <div class="mb-8">
+            <span class="inline-block px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-white text-sm font-medium mb-6 border border-white/20">
+                Lurahgo Semakin Di Depan
+            </span>
+        </div>
+
+        <h1 class="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
+            Kelola RT/RW dengan
+            <span class="text-yellow-300">
+                Sistem Raja Canggih
+            </span>
+        </h1>
+
+        <p class="text-xl text-blue-100 mb-12 max-w-3xl mx-auto leading-relaxed">
+            Platform digital terintegrasi untuk mengelola data warga, komunikasi transparan,
+            dan pelaporan real-time. Bergabunglah dengan ribuan RT/RW di seluruh Indonesia.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+            <a href="#services" class="group px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-full hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-2xl transform hover:scale-105">
+                <i class="fas fa-rocket mr-2 group-hover:animate-bounce"></i>Mulai Sekarang
+            </a>
+            <a href="#about" class="group px-8 py-4 bg-white/10 backdrop-blur-md text-white font-semibold rounded-full border border-white/20 hover:bg-white/20 transition-all duration-300">
+                <i class="fas fa-play-circle mr-2 group-hover:animate-pulse"></i>Lihat Demo
+            </a>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300">
+                <div class="text-3xl text-green-400 mb-3"><i class="fas fa-shield-alt"></i></div>
+                <h3 class="text-white font-semibold mb-2">Data Aman 100%</h3>
+                <p class="text-blue-100 text-sm">Enkripsi end-to-end & backup otomatis</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300">
+                <div class="text-3xl text-blue-400 mb-3"><i class="fas fa-clock"></i></div>
+                <h3 class="text-white font-semibold mb-2">Update Real-time</h3>
+                <p class="text-blue-100 text-sm">Informasi terbaru dalam hitungan detik</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300">
+                <div class="text-3xl text-purple-400 mb-3"><i class="fas fa-users"></i></div>
+                <h3 class="text-white font-semibold mb-2">Komunitas Besar</h3>
+                <p class="text-blue-100 text-sm">500+ RT/RW aktif menggunakan platform</p>
+            </div>
+        </div>
+    </div>
+
+
+</section>
