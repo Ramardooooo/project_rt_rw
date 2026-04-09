@@ -1,125 +1,115 @@
 <?php
 include 'config/database.php';
 
-// Safe check and add views column using separate query
-$check_views = mysqli_query($conn, "SHOW COLUMNS FROM announcements LIKE 'views'");
-if (mysqli_num_rows($check_views) == 0) {
+// Add views column
+$result = mysqli_query($conn, "SHOW COLUMNS FROM announcements LIKE 'views'");
+if (mysqli_num_rows($result) == 0) {
     mysqli_query($conn, "ALTER TABLE announcements ADD COLUMN views INT DEFAULT 0");
 }
 
-// Safe increment views (only if announcement exists)
-$query = "SELECT id FROM announcements ORDER BY created_at DESC LIMIT 6";
-$result = mysqli_query($conn, $query);
+// Update views
+$result = mysqli_query($conn, "SELECT id FROM announcements ORDER BY created_at DESC LIMIT 6");
+$ids = [];
 while ($row = mysqli_fetch_assoc($result)) {
-    $id = $row['id'];
-    mysqli_query($conn, "UPDATE announcements SET views = COALESCE(views, 0) + 1 WHERE id = $id");
+    $ids[] = (int)$row['id'];
+}
+if (!empty($ids)) {
+    $ids_str = implode(',', $ids);
+    mysqli_query($conn, "UPDATE announcements SET views = COALESCE(views, 0) + 1 WHERE id IN ($ids_str)");
 }
 
-// Fetch announcements with views
-$query = "SELECT *, COALESCE(views, 0) as views FROM announcements ORDER BY created_at DESC LIMIT 6";
-$result = mysqli_query($conn, $query);
+// Get announcements
+$result = mysqli_query($conn, "SELECT id, title, content, DATE_FORMAT(created_at, '%d %b %Y, %H:%i') as date, COALESCE(views, 0) as views, created_at > DATE_SUB(NOW(), INTERVAL 3 DAY) as is_new FROM announcements ORDER BY created_at DESC LIMIT 6");
 $announcements = mysqli_fetch_all($result, MYSQLI_ASSOC);
+foreach ($announcements as &$announcement) {
+    $announcement['preview'] = strlen($announcement['content']) > 120 ? substr($announcement['content'], 0, 120) . '...' : $announcement['content'];
+    $announcement['content'] = nl2br(htmlspecialchars($announcement['content']));
+}
 ?>
 
-<section id="announcements" class="py-20 bg-gradient-to-br from-indigo-50 via-white to-cyan-50 relative overflow-hidden">
-    <div class="absolute inset-0 opacity-5">
-        <div class="absolute top-10 left-20 w-40 h-40 bg-indigo-500/20 rounded-full blur-xl animate-pulse"></div>
-        <div class="absolute bottom-10 right-20 w-32 h-32 bg-cyan-500/20 rounded-full blur-xl animate-pulse" style="animation-delay: -1s;"></div>
-    </div>
+<section class="py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
 
-    <div class="relative max-w-7xl mx-auto px-6">
         <div class="text-center mb-16">
-            <span class="inline-block px-6 py-3 bg-gradient-to-r from-indigo-100 to-cyan-100 text-indigo-800 rounded-2xl text-sm font-semibold mb-6 shadow-lg">
-                <i class="fas fa-bolt mr-2"></i>Update & Pengumuman Terbaru
+            <span class="text-sm font-medium text-slate-500 tracking-wide uppercase">
+                Pengumuman
             </span>
-            <h2 class="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent drop-shadow-2xl">
-                Pengumuman & Berita
+            <h2 class="mt-3 text-4xl font-bold text-slate-900">
+                Update Terbaru
             </h2>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Informasi terkini tentang kegiatan RT/RW dan update sistem
+            <p class="mt-4 text-slate-600 max-w-xl mx-auto">
+                Informasi kegiatan RT/RW dan sistem terbaru
             </p>
         </div>
 
-        <?php if (empty($announcements)) : ?>
-            <div class="text-center py-20">
-                <div class="w-32 h-32 bg-gray-200 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl">
-                    <i class="fas fa-bullhorn text-4xl text-gray-400"></i>
+        <?php if (empty($announcements)): ?>
+            <div class="text-center py-20 border border-slate-200 rounded-xl">
+                <h3 class="text-lg font-semibold text-slate-800 mb-2">
+                    Belum ada pengumuman
+                </h3>
+                <p class="text-slate-500">
+                    Silakan cek kembali nanti
+                </p>
+            </div>
+        <?php else: ?>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <?php foreach ($announcements as $announcement): ?>
+            <article class="border border-slate-200 rounded-xl p-6 hover:border-slate-300 transition-all duration-300 bg-white">
+
+                <?php if ($announcement['is_new']): ?>
+                    <span class="text-xs font-semibold text-slate-500 uppercase">
+                        Baru
+                    </span>
+                <?php endif; ?>
+
+                <h3 class="mt-2 text-lg font-semibold text-slate-900 leading-snug line-clamp-2">
+                    <?= htmlspecialchars($announcement['title']) ?>
+                </h3>
+
+                <p id="preview-<?= $announcement['id'] ?>" class="mt-3 text-sm text-slate-600 line-clamp-3">
+                    <?= htmlspecialchars($announcement['preview']) ?>
+                </p>
+
+                <?php if (strlen($announcement['content']) > 120): ?>
+                    <div id="full-<?= $announcement['id'] ?>" class="hidden mt-3 text-sm text-slate-600 leading-relaxed">
+                        <?= $announcement['content'] ?>
+                    </div>
+
+                    <button onclick="toggleContent(<?= $announcement['id'] ?>, this)" 
+                        class="mt-4 text-sm font-medium text-slate-700 hover:text-slate-900 transition">
+                        Baca selengkapnya
+                    </button>
+                <?php endif; ?>
+
+                <div class="mt-6 pt-4 border-t border-slate-100 flex justify-between text-xs text-slate-500">
+                    <span><?= number_format($announcement['views']) ?> views</span>
+                    <span><?= $announcement['date'] ?></span>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-500 mb-4">Belum Ada Pengumuman</h3>
-                <p class="text-gray-500 max-w-md mx-auto">Pantau terus untuk update terbaru.</p>
-            </div>
-        <?php else : ?>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <?php foreach ($announcements as $index => $announcement) : 
-                    $is_new = strtotime($announcement['created_at']) > strtotime('-7 days');
-                    $preview = strlen($announcement['content']) > 150 ? substr($announcement['content'], 0, 150) . '...' : $announcement['content'];
-                ?>
-                    <article class="group bg-white/95 backdrop-blur-xl rounded-3xl shadow-xl hover:shadow-3xl p-8 transform hover:-translate-y-3 transition-all duration-500 border border-white/60 hover:border-indigo-200 overflow-hidden" data-aos="fade-up">
-                        <?php if ($is_new): ?>
-                            <span class="absolute top-4 right-4 bg-gradient-to-r from-emerald-400 to-green-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
-                                Baru
-                            </span>
-                        <?php endif; ?>
-                        
-                        <div class="flex items-start mb-6 relative z-10">
-                            <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-2xl flex items-center justify-center mr-5 group-hover:scale-110 transition-all duration-300 shadow-xl">
-                                <i class="fas fa-bullhorn text-2xl text-white"></i>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <h3 class="text-2xl font-bold text-gray-900 mb-2 leading-tight group-hover:text-indigo-600 transition-colors line-clamp-2">
-                                    <?php echo htmlspecialchars($announcement['title']); ?>
-                                </h3>
-                                <p class="text-sm text-gray-500 flex items-center mb-1">
-                                    <i class="fas fa-calendar-alt mr-2"></i>
-                                    <?php echo date('d M Y H:i', strtotime($announcement['created_at'])); ?>
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-6">
-                            <p class="text-gray-700 leading-relaxed text-base" id="preview-<?php echo $announcement['id']; ?>">
-                                <?php echo htmlspecialchars($preview); ?>
-                            </p>
-                            <?php if (strlen($announcement['content']) > 150): ?>
-                                <button onclick="toggleContent(<?php echo $announcement['id']; ?>)">
-                                    <span class="text-indigo-600 font-semibold hover:text-indigo-800 flex items-center text-sm transition-all duration-200">
-                                        Baca selengkapnya <i class="fas fa-chevron-down ml-1 transform -rotate-0 group-hover:rotate-180"></i>
-                                    </span>
-                                </button>
-                                <div id="full-<?php echo $announcement['id']; ?>" class="mt-4 hidden text-gray-700 leading-relaxed text-base max-h-32 overflow-y-auto pr-2">
-                                    <?php echo nl2br(htmlspecialchars($announcement['content'])); ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                        
-                        <div class="flex items-center pt-6 border-t border-gray-200">
-                            <div class="text-sm text-gray-500">
-                                <i class="fas fa-eye mr-1"></i>
-                                <span><?php echo number_format($announcement['views']); ?> views</span>
-                            </div>
-                        </div>
-                    </article>
-                <?php endforeach; ?>
-            </div>
+
+            </article>
+            <?php endforeach; ?>
+
+        </div>
+
         <?php endif; ?>
     </div>
 </section>
 
 <script>
-function toggleContent(id) {
+function toggleContent(id, btn) {
     const full = document.getElementById('full-' + id);
     const preview = document.getElementById('preview-' + id);
-    const btn = event.target.closest('button');
-    const icon = btn.querySelector('i');
-    
+
     if (full.classList.contains('hidden')) {
         full.classList.remove('hidden');
-        preview.style.display = 'none';
-        btn.querySelector('span').innerHTML = 'Tutup <i class="fas fa-chevron-up ml-1 transform rotate-180"></i>';
+        preview.classList.add('hidden');
+        btn.textContent = 'Tutup';
     } else {
         full.classList.add('hidden');
-        preview.style.display = 'block';
-        btn.querySelector('span').innerHTML = 'Baca selengkapnya <i class="fas fa-chevron-down ml-1 transform -rotate-0"></i>';
+        preview.classList.remove('hidden');
+        btn.textContent = 'Baca selengkapnya';
     }
 }
 </script>

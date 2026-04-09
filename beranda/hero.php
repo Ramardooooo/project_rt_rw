@@ -1,4 +1,4 @@
-<section id="hero" class="animate-on-scroll animate-fade-left relative py-20 bg-gradient-to-br from-blue-900/90 via-blue-800/90 to-blue-900/90 overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop&crop=center'); background-size: cover; background-position: center;">
+<section id="hero" class="animate-on-scroll animate-fade-left relative py-20 bg-gradient-to-br from-blue-900/90 via-blue-800/90 to-blue-900/90 overflow-hidden" style="background-image: url('https://plus.unsplash.com/premium_photo-1661905195522-41da87e831d8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-position: center;">
 
     <div class="relative max-w-7xl mx-auto px-6 text-center">
         <div class="mb-8">
