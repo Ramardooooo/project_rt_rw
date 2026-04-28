@@ -1,29 +1,32 @@
-# Lurahgo
+# 🌿 Lurahgo — Management System RT/RW
 
-> Management System untuk RT/RW berbasis web.
+> Solusi digital untuk mengelola data kependudukan, administrasi RT/RW, dan komunikasi warga secara efisien.
 
-## Tentang
+![PHP Version](https://img.shields.io/badge/PHP-8.0%2B-777BB4?style=flat-square&logo=php)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=flat-square&logo=mysql)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.0-06B6D4?style=flat-square&logo=tailwindcss)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6-F7DF1E?style=flat-square&logo=javascript)
+![License](https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square)
 
-Sistem manajemen data warga, administrasi KK, mutasi penduduk, dan pengumuman digital untuk lingkungan RT/RW.
+---
 
-## Fitur
+## 📋 Tentang Lurahgo
 
-- Manajemen Data Warga (CRUD)
-- Pendataan Kartu Keluarga
-- Dashboard Statistik
-- Multi-level Role (Admin, Ketua, User)
-- Riwayat Aktivitas (Audit Log)
-- Pengumuman Warga
-- Galeri Kegiatan
+**Lurahgo** adalah sistem manajemen RT/RW berbasis web yang dirancang untuk membantu pengurus lingkungan dalam mengelola data warga, administrasi, dan aktivitas secara digital. Dengan antarmuka yang modern dan mudah digunakan, Lurahgo menjadi solusi tepat untuk mewujudkan lingkungan yang lebih tertata.
 
-## Teknologi
+### ✨ Fitur Utama
 
-- **Backend**: PHP Native
-- **Frontend**: TailwindCSS + JavaScript
-- **Database**: MySQL
-- **Server**: Apache
+| Fitur | Deskripsi |
+|-------|------------|
+| 👥 **Manajemen Data Warga** | CRUD lengkap data warga dengan filter dan pencarian |
+| 🏠 **Pendataan Kartu Keluarga** | Kelola data KK beserta anggota keluarga |
+| 📊 **Dashboard Statistik** | Visualisasi data dengan grafik interaktif |
+| 🔐 **Multi-level Role** | Admin, Ketua RT, dan User dengan akses berbeda |
+| 📢 **Pengumuman Warga** | Informasi penting dapat disampaikan secara real-time |
+| 📝 **Riwayat Aktivitas** | Audit log untuk setiap perubahan data |
+| 📑 **Mutasi Warga** | Catat perpindahan penduduk (datang, pindah, meninggal) |
+| 🖼️ **Galeri Kegiatan** | Dokumentasi kegiatan lingkungan |
 
-## Instalasi
+---
 
-```bash
-git clone https://github.com/Ramardooooo/project.git
+## 🛠️ Teknologi yang Digunakan
