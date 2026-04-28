@@ -1,5 +1,5 @@
 <?php
-// Fixed testimonials.php - safe null handling, correct column names: name, description
+// Fixed testimonials.php - safe null handling, correct column names, no warnings
 include 'config/database.php';
 $has_testimoni = false;
 $user_id = $_SESSION['user_id'] ?? null;
@@ -24,13 +24,13 @@ $stmt = mysqli_prepare($conn, 'SELECT * FROM testimonials WHERE name IS NOT NULL
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 while ($row = mysqli_fetch_assoc($result)) {
-    $name = $row['name'] ?? 'Anonymous';
-    $description = $row['description'] ?? 'No description provided.';
+    $nama = $row['name'] ?? 'Anonymous';
+    $pesan = $row['description'] ?? 'No description provided.';
     $rating = $row['rating'] ?? 0;
     
     $avatar = 'https://randomuser.me/api/portraits/' . ($rating % 2 ? 'men' : 'women') . '/' . rand(1,99) . '.jpg';
     
-    $safe_name = mysqli_real_escape_string($conn, $name);
+    $safe_name = mysqli_real_escape_string($conn, $nama);
     $user_result = mysqli_query($conn, "SELECT profile_photo FROM users WHERE username = '" . $safe_name . "' LIMIT 1");
     if ($user_row = mysqli_fetch_assoc($user_result)) {
         $user_photo = $user_row['profile_photo'] ?? '';
@@ -48,13 +48,13 @@ while ($row = mysqli_fetch_assoc($result)) {
     
     echo '<div class="bg-white rounded-lg shadow-md p-6">
         <div class="flex items-center mb-4">
-            <img src="' . htmlspecialchars($avatar) . '" alt="' . htmlspecialchars($name) . '" class="w-12 h-12 rounded-full mr-4 object-cover">
+            <img src="' . htmlspecialchars($avatar) . '" alt="' . htmlspecialchars($nama) . '" class="w-12 h-12 rounded-full mr-4 object-cover">
             <div>
-                <h4 class="font-semibold text-gray-800">' . htmlspecialchars($name) . '</h4>
+                <h4 class="font-semibold text-gray-800">' . htmlspecialchars($nama) . '</h4>
                 <p class="text-sm text-gray-500">' . $date . '</p>
             </div>
         </div>
-        <p class="text-gray-600 italic mb-4">" ' . htmlspecialchars($description) . ' "</p>
+        <p class="text-gray-600 italic mb-4">" ' . htmlspecialchars($pesan) . ' "</p>
         <div class="flex mt-4">' . $rating_stars . '</div>
     </div>';
 }
@@ -69,17 +69,17 @@ mysqli_stmt_close($stmt);
                     <h3 class="text-2xl font-serif font-bold text-gray-800 text-center mb-6">Kirim Testimoni Anda</h3>
                     <p class="text-center text-gray-600 mb-8">Bantu kami improve layanan dengan rating dan feedback Anda!</p>
                     <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testimonial_submit'])) {
-                        $name = trim($_POST['name'] ?? ($_SESSION['username'] ?? 'Anonymous'));
+                        $nama = trim($_POST['name'] ?? ($_SESSION['username'] ?? 'Anonymous'));
                         $rating = intval($_POST['rating'] ?? 0);
-                        $description = trim($_POST['description'] ?? '');
+                        $pesan = trim($_POST['description'] ?? '');
                         $errors = [];
-                        if (empty($name)) $errors[] = 'Nama wajib diisi.';
+                        if (empty($nama)) $errors[] = 'Nama wajib diisi.';
                         if ($rating < 1 || $rating > 5) $errors[] = 'Rating harus 1-5.';
-                        if (empty($description)) $errors[] = 'Testimoni wajib diisi.';
-                        if (strlen($description) < 10) $errors[] = 'Testimoni minimal 10 karakter.';
+                        if (empty($pesan)) $errors[] = 'Testimoni wajib diisi.';
+                        if (strlen($pesan) < 10) $errors[] = 'Testimoni minimal 10 karakter.';
                         if (empty($errors)) {
                             $stmt = mysqli_prepare($conn, 'INSERT INTO testimonials (name, rating, description, user_id, created_at) VALUES (?, ?, ?, ?, NOW())');
-                            mysqli_stmt_bind_param($stmt, 'sisi', $name, $rating, $description, $user_id);
+                            mysqli_stmt_bind_param($stmt, 'sisi', $nama, $rating, $pesan, $user_id);
                             if (mysqli_stmt_execute($stmt)) {
                                 $has_testimoni = true;
                                 echo '<div class="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-xl mb-6"><i class="fas fa-check-circle mr-3"></i> Terima kasih atas testimoni Anda!</div>';

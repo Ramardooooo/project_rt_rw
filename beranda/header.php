@@ -16,7 +16,8 @@ if ($user_id) {
 
 
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-        <a href="/" class="flex items-center space-x-4 hover:opacity-80 transition-opacity duration-300 cursor-pointer">
+        <a href="/" class="flex items-center space-x-3 hover:opacity-90 transition-all duration-300 cursor-pointer group">
+            <img src="LOGO/WhatsApp Image 2026-04-28 at 12.49.16.jpeg" alt="Lurahgo Logo" class="h-12 w-auto rounded-lg shadow-sm group-hover:scale-105 group-hover:shadow-md transition-all duration-300 object-contain bg-white">
             <div>
                 <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Lurahgo.id</h1>
                 <p class="text-xs text-gray-500 hidden sm:block">Website Digital RT/RW</p>
