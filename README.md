@@ -50,6 +50,7 @@
 
 ### Langkah-langkah
 
+```bash
 # 1. Clone repository
 git clone https://github.com/Ramardooooo/project.git
 
