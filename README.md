@@ -49,6 +49,13 @@
 - Web Server (XAMPP / Laragon / Apache)
 
 ### Langkah-langkah
+👨‍💻 Developer
+Ramardo
+Fullstack Developer
+
+https://img.shields.io/badge/GitHub-Ramardooooo-181717?style=flat-square&logo=github
+
+<div align="center"> <sub>Built with by Ramardo</sub> <br /> <sub>© 2026 Lurahgo — Management System RT/RW</sub> </div> ```
 
 ```bash
 # 1. Clone repository
@@ -66,10 +73,4 @@ git clone https://github.com/Ramardooooo/project_rt_Rw.git
 # 4. Konfigurasi database
 # Edit file config/database.php
 
-👨‍💻 Developer
-Ramardo
-Fullstack Developer
 
-https://img.shields.io/badge/GitHub-Ramardooooo-181717?style=flat-square&logo=github
-
-<div align="center"> <sub>Built with by Ramardo</sub> <br /> <sub>© 2026 Lurahgo — Management System RT/RW</sub> </div> ```
