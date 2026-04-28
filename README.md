@@ -30,3 +30,37 @@
 ---
 
 ## 🛠️ Teknologi yang Digunakan
+
+| Teknologi | Keterangan |
+|-----------|-------------|
+| PHP 8.0+ | Backend logic & authentication |
+| MySQL 8.0 | Database penyimpanan data |
+| TailwindCSS 3.0 | Styling modern & responsif |
+| JavaScript ES6 | Interaktivitas frontend |
+| Apache | Web server |
+
+---
+
+## ⚙️ Cara Install
+
+### Persyaratan
+- PHP 8.0 atau lebih tinggi
+- MySQL 8.0 atau lebih tinggi
+- Web Server (XAMPP / Laragon / Apache)
+
+### Langkah-langkah
+
+# 1. Clone repository
+git clone https://github.com/Ramardooooo/project.git
+
+# 2. Pindahkan ke folder server
+# XAMPP   → htdocs/
+# Laragon → www/
+
+# 3. Import database
+# - Buka phpMyAdmin
+# - Buat database baru (contoh: rt_rw)
+# - Import file rt_rw.sql
+
+# 4. Konfigurasi database
+# Edit file config/database.php
