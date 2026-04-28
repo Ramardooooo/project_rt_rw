@@ -1,0 +1,499 @@
+/* TailAdmin Login Styles - Adapted for Lurahgo.id */
+
+/*===== GOOGLE FONTS =====*/
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+
+/*===== VARIABLES CSS =====*/
+:root{
+    --first-color: #12192C;
+    --text-color: #8590AD;
+    --accent-color: #3b82f6;
+}
+
+/*=== Container ===*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/*===== FORM =====*/
+.l-form {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/*=== Shapes ===*/
+.shape1, .shape2 {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.shape1 {
+    top: -7rem;
+    left: -3.5rem;
+    background: linear-gradient(180deg, var(--first-color) 0%, rgba(196,196,196,0) 100%);
+}
+
+.shape2 {
+    bottom: -6rem;
+    right: -5.5rem;
+    background: linear-gradient(180deg, var(--first-color) 0%, rgba(196,196,196,0) 100%);
+    transform: rotate(180deg);
+}
+
+/*=== Form Grid ===*/
+.form {
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    padding: 0 1rem;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.form__img {
+    display: none;
+    width: 100%;
+    max-width: 550px;
+    height: auto;
+    justify-self: center;
+}
+
+.form__content {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 25px 45px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.form__title {
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    color: #fff;
+    text-align: center;
+    letter-spacing: -0.5px;
+}
+
+/* Error handling */
+.error {
+    background-color: rgba(239, 68, 68, 0.2);
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    color: #fecaca;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Form groups */
+.form__div {
+    position: relative;
+    display: grid;
+    grid-template-columns: 7% 93%;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--text-color);
+    transition: border-color 0.3s ease;
+}
+
+.form__div.focus {
+    border-bottom: 1px solid #fff;
+}
+
+.form__icon {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+}
+
+.form__div.focus .form__icon {
+    color: #fff;
+}
+
+.form__label {
+    position: absolute;
+    left: 2.5rem;
+    top: 0.75rem;
+    font-size: 0.938rem;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    z-index: 2;
+    background: transparent;
+}
+
+.form__div.focus .form__label,
+.form__input:valid + .form__label {
+    top: -0.75rem;
+    left: 0.75rem;
+    font-size: 0.75rem;
+    color: #fff;
+    background: rgba(18, 25, 44, 0.8);
+    padding: 0 0.5rem;
+    border-radius: 5px;
+}
+
+.form__input {
+    position: relative;
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 1rem 0;
+    color: #fff;
+    font-size: 1rem;
+    z-index: 1;
+}
+
+.form__input::placeholder {
+    color: transparent;
+}
+
+/* Password toggle */
+.password-toggle {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 1.2rem;
+    z-index: 3;
+    transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+    color: #fff;
+}
+
+/* Forgot & Register */
+.form__forgot, .register-link {
+    display: block;
+    text-align: right;
+    margin: 1rem 0 2rem 0;
+    color: rgba(255,255,255,0.8);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.form__forgot:hover, .register-link a:hover {
+    color: #fff;
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.register-link a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* Button */
+.form__button {
+    width: 100%;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, var(--first-color), #1e293b);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(18, 25, 44, 0.4);
+}
+
+.form__button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(18, 25, 44, 0.6);
+    background: linear-gradient(135deg, #1e293b, var(--first-color));
+}
+
+.form__button.loading {
+    pointer-events: none;
+}
+
+.form__button.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid transparent;
+    border-top: 2px solid #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Social (optional) */
+.form__social {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.form__social-text {
+    display: block;
+    color: rgba(255,255,255,0.7);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.form__social-icon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px;
+    height: 45px;
+    margin: 0 0.5rem;
+    color: #fff;
+    font-size: 1.25rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.form__social-icon:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* Responsive */
+@media screen and (min-width: 968px) {
+    .shape1 {
+        width: 450px;
+        height: 450px;
+        top: -12rem;
+        left: -7rem;
+    }
+    .shape2 {
+        width: 350px;
+        height: 350px;
+        right: -7rem;
+    }
+
+    .form {
+        height: 100vh;
+        grid-template-columns: 1.8fr 1fr;
+        padding: 0 1.5rem;
+        gap: 2.5rem;
+    }
+    
+    .form__content {
+        max-width: none;
+    }
+    
+    .form__img {
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    .form__content {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+    }
+    
+    .form__title {
+        font-size: 1.75rem;
+    }
+}
+
+/* TailAdmin Sponsor Slider */
+.sponsors-section {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    opacity: 0.9;
+}
+
+.sponsors-marquee {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 40px;
+    mask: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    -webkit-mask: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.sponsors {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 3rem;
+    animation: scroll-left 25s linear infinite;
+    will-change: transform;
+}
+
+.sponsors-dupe {
+    animation-delay: -12.5s;
+}
+
+@keyframes scroll-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.sponsor-logo {
+    height: 28px;
+    min-width: 80px;
+    opacity: 0.7;
+    filter: grayscale(1) brightness(1.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.9);
+    border-radius: 6px;
+    backdrop-filter: blur(10px);
+    padding: 0 0.5rem;
+}
+
+.sponsor-logo:hover {
+    opacity: 1;
+    filter: grayscale(0) brightness(1.1) drop-shadow(0 4px 12px rgba(255,255,255,0.3));
+    transform: scale(1.05);
+}
+
+/* Specific sponsor logo shapes */
+.tailwind {
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.php {
+    background: linear-gradient(135deg, #787cb4, #4f5eb8);
+    clip-path: circle(50%);
+    position: relative;
+}
+
+.php::before {
+    content: 'PHP';
+    font-size: 9px;
+    font-weight: bold;
+}
+
+.mysql {
+    background: linear-gradient(135deg, #007396, #005377);
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+}
+
+.laravel {
+    background: linear-gradient(135deg, #fb503c, #dd330a);
+    border-radius: 8px;
+}
+
+.vue {
+    background: linear-gradient(135deg, #42b883, #35495e);
+    clip-path: polygon(20% 0%, 0% 50%, 20% 100%, 100% 0%);
+}
+
+.boxicons {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    font-size: 20px;
+    color: white !important;
+}
+
+.nextjs {
+    background: linear-gradient(135deg, #000, #fff);
+    color: #000;
+}
+
+.nextjs::before {
+    content: 'next.js';
+    font-size: 8px;
+}
+
+.nodejs {
+    background: linear-gradient(135deg, #68a063, #3c873a);
+}
+
+.nodejs::before {
+    content: 'Node';
+    font-size: 9px;
+}
+
+.bootstrap {
+    background: linear-gradient(135deg, #563d7c, #6f42c1);
+    border-radius: 4px 0;
+}
+
+.bootstrap::before {
+    content: 'BS';
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.github {
+    background: linear-gradient(135deg, #000, #333);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.vercel {
+    background: linear-gradient(135deg, #000, #fff);
+    color: #000;
+}
+
+.vercel::before {
+    content: 'Vercel';
+    font-size: 8px;
+}
+
+.netlify {
+    background: linear-gradient(135deg, #00c7b7, #00907c);
+}
+
+.netlify::before {
+    content: 'Netlify';
+    font-size: 8px;
+}
+
+@media (max-width: 480px) {
+    .sponsors { gap: 2rem; }
+    .sponsor-logo { height: 24px; min-width: 60px; font-size: 9px; }
+}
+
