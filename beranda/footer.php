@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS for modern map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         * {
             margin: 0;
@@ -292,6 +294,80 @@
             box-shadow: 0 6px 14px -6px rgba(56, 189, 248, 0.2);
         }
 
+        /* maps styling */
+        .maps-section h4 {
+            color: #E2E8F0;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.4rem;
+            letter-spacing: -0.2px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .maps-section h4::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 35px;
+            height: 2px;
+            background: linear-gradient(90deg, #38BDF8, #2DD4BF);
+            border-radius: 2px;
+        }
+
+        .map-container {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+            height: 180px;
+        }
+
+        #miniMap {
+            height: 100%;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .address-detail {
+            color: #94A3B8;
+            font-size: 0.75rem;
+            line-height: 1.5;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 12px;
+        }
+
+        .address-detail i {
+            width: 20px;
+            color: #38BDF8;
+        }
+
+        .btn-google-map {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            color: #38BDF8;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            margin-top: 0.8rem;
+        }
+
+        .btn-google-map:hover {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: #38BDF8;
+            transform: translateY(-2px);
+        }
+
         /* bottom bar */
         .footer-bottom {
             border-top: 1px solid rgba(51, 65, 85, 0.4);
@@ -415,6 +491,9 @@
                 height: 42px;
                 bottom: 20px;
             }
+            .map-container {
+                height: 160px;
+            }
         }
     </style>
 </head>
@@ -466,21 +545,20 @@
                     </ul>
                 </div>
 
-                <!-- Newsletter section - versi lebih simpel (tidak ada "Dapatkan update fitur terbaru") -->
-                <div class="newsletter-section">
-                    <h4>Newsletter</h4>
-                    <p class="newsletter-text">
-                        Dapatkan info terbaru langsung ke email Anda.
-                    </p>
-                    <form id="premiumNewsForm" class="newsletter-form">
-                        <input type="email" id="newsEmail" placeholder="Email Anda" class="newsletter-input" required>
-                        <button type="submit" class="btn-subscribe">
-                            <i class="fas fa-paper-plane"></i> Berlangganan
-                        </button>
-                    </form>
-                    <p style="font-size: 0.7rem; color: #4B5563; margin-top: 12px;">
-                        <i class="fas fa-lock"></i> Privasi Anda terlindungi
-                    </p>
+                <!-- NEW: Maps & Location Section -->
+                <div class="maps-section">
+                    <h4>Lokasi Kami</h4>
+                    <div class="map-container">
+                        <div id="miniMap"></div>
+                    </div>
+                    <div class="address-detail">
+                        <i class="fas fa-map-pin"></i> Jl. Flamboyan V No.5B, RT.042/RW.001,<br>
+                        Sungai Miai, Kec. Banjarmasin Utara,<br>
+                        Kota Banjarmasin, Kalimantan Selatan 70123
+                    </div>
+                    <a href="https://maps.app.goo.gl/NjMQFje6evjXnnDe7" target="_blank" rel="noopener noreferrer" class="btn-google-map">
+                        <i class="fab fa-google"></i> Buka di Google Maps
+                    </a>
                 </div>
             </div>
 
@@ -510,6 +588,8 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         (function() {
             // Back to top dengan animasi smooth & intersection observer
@@ -565,6 +645,40 @@
                     }, 700);
                 });
             }
+
+            // Initialize Map - SMK ISFI Banjarmasin coordinates
+            // Based on Google Maps link: SMK ISFI Banjarmasin at Jl. Flamboyan V No.5B
+            // Coordinates: -3.2920, 114.5982 (approximate center of Banjarmasin Utara area)
+            var map = L.map('miniMap').setView([-3.2920, 114.5982], 16);
+            
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; CartoDB',
+                subdomains: 'abcd',
+                maxZoom: 19,
+                minZoom: 10
+            }).addTo(map);
+            
+            // Custom marker icon (simple but modern)
+            var customIcon = L.divIcon({
+                html: '<div style="background: linear-gradient(135deg, #38BDF8, #2DD4BF); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 3px rgba(56,189,248,0.3), 0 4px 12px rgba(0,0,0,0.3);"><i class="fas fa-map-marker-alt" style="color: white; font-size: 16px; text-shadow: 0 1px 1px rgba(0,0,0,0.2);"></i></div>',
+                className: 'custom-marker',
+                iconSize: [32, 32],
+                iconAnchor: [16, 32],
+                popupAnchor: [0, -32]
+            });
+            
+            var marker = L.marker([-3.2920, 114.5982], { icon: customIcon }).addTo(map);
+            marker.bindPopup('<b>SMK ISFI Banjarmasin</b><br>Jl. Flamboyan V No.5B, Sungai Miai<br>Banjarmasin Utara, Kalimantan Selatan').openPopup();
+            
+            // Optional: add a subtle circle to indicate area
+            L.circle([-3.2920, 114.5982], {
+                color: '#38BDF8',
+                weight: 1,
+                opacity: 0.4,
+                fillColor: '#38BDF8',
+                fillOpacity: 0.08,
+                radius: 100
+            }).addTo(map);
         })();
     </script>
 </body>
