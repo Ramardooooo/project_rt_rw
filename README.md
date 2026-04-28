@@ -1,69 +1,29 @@
-Lurahgo adalah Management System RT/RW
+# Lurahgo
 
-Lurahgo atau Website ini adalah sistem manajemen RT/RW berbasis web untuk mengelola data warga, administrasi, dan aktivitas lingkungan secara digital.
+> Management System untuk RT/RW berbasis web.
 
+## Tentang
 
-📌 Fitur Utama:
+Sistem manajemen data warga, administrasi KK, mutasi penduduk, dan pengumuman digital untuk lingkungan RT/RW.
+
+## Fitur
+
 - Manajemen Data Warga (CRUD)
-- Pendataan KK (Kartu Keluarga)
-- Surat Menyurat (opsional)
-- 🔐 Sistem Login & Role (Admin / Ketua / User)
+- Pendataan Kartu Keluarga
 - Dashboard Statistik
-- Riwayat Data
-- 📢 Pengumuman Warga
-- Panel Admin
+- Multi-level Role (Admin, Ketua, User)
+- Riwayat Aktivitas (Audit Log)
+- Pengumuman Warga
+- Galeri Kegiatan
 
+## Teknologi
 
-🖥️ Teknologi yang Digunakan:
-- Frontend: HTML, Talwind CSS, JavaScript
-- Backend: PHP Native
-- Database: MySQL
-- Server: Apache (XAMPP / Laragon)
+- **Backend**: PHP Native
+- **Frontend**: TailwindCSS + JavaScript
+- **Database**: MySQL
+- **Server**: Apache
 
-⚙️ Cara Install
+## Instalasi
 
-1. Clone repository
-   git clone https://github.com/Ramardooooo/project.git
-
-2. Pindahkan ke folder server
-   - XAMPP → htdocs
-   - Laragon → www
-
-3. Import database
-   - Buat database (misal: rt_rw)
-   - Import file .sql
-
-4. Setting koneksi database
-   Edit config/database.php
-
-   mysqli_connect("localhost", "root", "", "rt_rw");
-
-5. Jalankan project
-   http://localhost/nama-project
-
-
-👤 Role User
-Admin  : Full akses sistem  
-Ketua : Kelola data warga  
-User   : Lihat data  
-
-
-🔐 Keamanan
-- Password menggunakan password_hash()
-- Validasi input dasar
-- Session login
-
-
-🚀 Pengembangan Selanjutnya
-- Notifikasi WhatsApp
-- Export Excel
-- API Integration
-- Mobile responsive
-- Sistem iuran warga
-
-
-🤝 Kontribusi
-Pull request terbuka untuk pengembangan project ini.
-
-👨‍💻 Developer
-Dibuat oleh Ramardo
+```bash
+git clone https://github.com/Ramardooooo/project.git
