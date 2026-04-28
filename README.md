@@ -52,7 +52,7 @@
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/Ramardooooo/project.git
+git clone https://github.com/Ramardooooo/project_rt_Rw.git
 
 # 2. Pindahkan ke folder server
 # XAMPP   → htdocs/
