@@ -14,8 +14,8 @@ if (isset($_GET['id'])) {
     $rw_id = (int)$_GET['id'];
     $rw = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM rw WHERE id = $rw_id"));
     if (!$rw) {
-    header("Location: manage_rw");
-    exit();
+        header("Location: manage_rw");
+        exit();
     }
 }
 
@@ -48,90 +48,126 @@ if (isset($_POST['update_rw'])) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit RW - Lurahgo.id</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Edit RW: Lurahgo.id</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-in {
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+        
+        .form-input-focus:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+        }
+        
+        .card-shadow {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+        }
+    </style>
 </head>
-<body class="min-h-screen bg-blue-900">
-<div class="ml-64 min-h-screen flex items-center justify-center p-8">
-    <div class="max-w-xl w-full bg-white/90 backdrop-blur-md rounded-2xl shadow-lg p-7 border border-white/20 hover:shadow-2xl hover:bg-white/95 transition-all duration-300">
-
-        <h1 class="text-xl font-semibold text-gray-800 mb-5">
-            Edit Data RW
-        </h1>
-
-        <?php if (isset($error)): ?>
-            <p class="text-red-500 mb-3"><?php echo $error; ?></p>
-        <?php endif; ?>
-
-        <form method="POST" class="space-y-4">
-
-            <div>
-                <label class="block text-sm text-gray-700 mb-1">
-                    Nama RW
-                </label>
-                <input
-                    type="text"
-                    name="nama_rw"
-                    value="<?php echo $rw['name']; ?>"
-                    placeholder="Contoh: RW 01"
-                    required
-                    class="w-full border rounded px-3 py-2 focus:outline-none focus:border-green-500"
-                >
+<body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-slate-100">
+<div class="ml-64 min-h-screen flex items-center justify-center p-6">
+    <div class="max-w-lg w-full animate-in">
+        
+        <!-- Card Header Premium - Tema Biru -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden card-shadow">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-5">
+                <div>
+                    <h2 class="text-xl font-bold text-white tracking-tight">Edit RW</h2>
+                    <p class="text-xs text-blue-100 mt-0.5">Perbarui data Rukun Warga</p>
+                </div>
             </div>
+            
+            <div class="p-6">
+                <?php if (isset($error)): ?>
+                    <div class="mb-5 p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm flex items-center gap-2">
+                        <i class="fas fa-exclamation-circle text-red-500"></i>
+                        <span><?php echo $error; ?></span>
+                    </div>
+                <?php endif; ?>
 
-            <div>
-                <label class="block text-sm text-gray-700 mb-1">
-                    Ketua RW
-                </label>
-                <select name="ketua_rw_id" required class="w-full border rounded px-3 py-2 focus:outline-none focus:border-green-500">
-                    <option value="">Pilih Ketua RW dari Warga</option>
-                    <?php 
-                    $warga_list = mysqli_query($conn, "SELECT id, nama, nik FROM warga WHERE status = 'aktif' ORDER BY nama ASC");
-                    while ($w = mysqli_fetch_assoc($warga_list)): 
-                    $selected = (isset($rw['ketua_rw_id']) && $rw['ketua_rw_id'] == $w['id']) ? 'selected' : '';
-                    ?>
-                        <option value="<?php echo $w['id']; ?>" <?php echo $selected; ?>><?php echo htmlspecialchars($w['nama']) . ' (' . $w['nik'] . ')'; ?></option>
-                    <?php endwhile; ?>
-                </select>
+                <form method="POST" class="space-y-4">
+                    <!-- Nama RW Field -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                            <i class="fas fa-tag text-gray-400 mr-1 text-xs"></i> Nama RW
+                        </label>
+                        <input type="text" name="nama_rw" value="<?php echo htmlspecialchars($rw['name']); ?>"
+                            placeholder="Contoh: RW 01" required
+                            class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-400 form-input-focus transition-all bg-gray-50/50">
+                    </div>
+
+                    <!-- Ketua RW Field -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                            <i class="fas fa-user-tie text-gray-400 mr-1 text-xs"></i> Ketua RW
+                        </label>
+                        <select name="ketua_rw_id" required class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-400 form-input-focus transition-all bg-gray-50/50 cursor-pointer">
+                            <option value="">Pilih Ketua RW dari Warga</option>
+                            <?php 
+                            $warga_list = mysqli_query($conn, "SELECT id, nama, nik FROM warga WHERE status = 'aktif' ORDER BY nama ASC");
+                            while ($w = mysqli_fetch_assoc($warga_list)): 
+                                $selected = (isset($rw['ketua_rw_id']) && $rw['ketua_rw_id'] == $w['id']) ? 'selected' : '';
+                            ?>
+                                <option value="<?php echo $w['id']; ?>" <?php echo $selected; ?>><?php echo htmlspecialchars($w['nama']) . ' (' . $w['nik'] . ')'; ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
+
+                    <!-- Status Field -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                            <i class="fas fa-circle text-gray-400 mr-1 text-xs"></i> Status
+                        </label>
+                        <select name="status" required
+                            class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-400 form-input-focus transition-all bg-gray-50/50 cursor-pointer">
+                            <option value="aktif" <?php echo ($rw['status'] == 'aktif') ? 'selected' : ''; ?>>🟢 Aktif</option>
+                            <option value="tidak_aktif" <?php echo ($rw['status'] == 'tidak_aktif') ? 'selected' : ''; ?>>🔴 Tidak Aktif</option>
+                        </select>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="flex gap-3 pt-4">
+                        <button type="submit" name="update_rw"
+                            class="flex-1 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+                            <i class="fas fa-save"></i>
+                            <span>Update RW</span>
+                        </button>
+
+                        <a href="manage_rw"
+                            class="flex-1 text-center py-3 rounded-xl font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-800 transition-all duration-300 flex items-center justify-center gap-2">
+                            <i class="fas fa-arrow-left text-sm"></i>
+                            <span>Kembali</span>
+                        </a>
+                    </div>
+                </form>
             </div>
-
-            <div>
-                <label class="block text-sm text-gray-700 mb-1">
-                    Status
-                </label>
-                <select
-                    name="status"
-                    required
-                    class="w-full border rounded px-3 py-2 focus:outline-none focus:border-green-500"
-                >
-                    <option value="aktif" <?php echo ($rw['status'] == 'aktif') ? 'selected' : ''; ?> >Aktif</option>
-                    <option value="tidak_aktif" <?php echo ($rw['status'] == 'tidak_aktif') ? 'selected' : ''; ?>>Tidak Aktif</option>
-                </select>
-            </div>
-
-            <div class="flex gap-3 pt-3">
-                <button
-                    type="submit"
-                    name="update_rw"
-                    class="flex-1 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:scale-105 transition-all duration-300">
-                    Update
-                </button>
-
-                <a
-                    href="manage_rw"
-                    class="flex-1 text-center bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 rounded">
-                    Kembali
-                </a>
-            </div>
-
-        </form>
-
+        </div>
+        
+        <!-- Footer note -->
+        <p class="text-center text-xs text-gray-400 mt-6">
+            <i class="fas fa-shield-alt mr-1"></i> Perubahan akan tercatat dalam log aktivitas
+        </p>
     </div>
 </div>
-
 </body>
 </html>

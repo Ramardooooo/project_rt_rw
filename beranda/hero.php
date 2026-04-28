@@ -21,7 +21,6 @@
             overflow-x: hidden;
         }
 
-        /* HERO SECTION KEREN BANGET */
         .hero-banget {
             position: relative;
             min-height: 100vh;
@@ -34,7 +33,6 @@
             background: #000000;
         }
 
-        /* animated gradient mesh background (lebih keren dari biasanya) */
         .hero-mesh {
             position: absolute;
             inset: 0;
@@ -58,7 +56,6 @@
             100% { transform: translate(4%, 3%) rotate(2deg); opacity: 1; }
         }
 
-        /* glitchy noise overlay super subtle */
         .noise-overlay {
             position: absolute;
             inset: 0;
@@ -68,7 +65,6 @@
             mix-blend-mode: overlay;
         }
 
-        /* glowing orbs 3d style */
         .orb-ultra {
             position: absolute;
             border-radius: 50%;
@@ -107,17 +103,15 @@
             100% { transform: translate(5%, 7%) scale(1.1); }
         }
 
-        /* container utama */
         .container-mantap {
             position: relative;
             z-index: 30;
             max-width: 1320px;
             margin: 0 auto;
-            padding: 4rem 2rem 6rem;
+            padding: 3rem 2rem 5rem;
             width: 100%;
         }
 
-        /* badge elite dengan efek border neon */
         .badge-elite {
             display: inline-flex;
             align-items: center;
@@ -132,7 +126,7 @@
             letter-spacing: 0.3px;
             color: #E2E8F0;
             transition: all 0.35s;
-            margin-bottom: 2.2rem;
+            margin-bottom: 2rem;
             box-shadow: 0 0 12px rgba(56,189,248,0.2);
         }
 
@@ -149,14 +143,13 @@
             box-shadow: 0 0 20px rgba(45,212,191,0.3);
         }
 
-        /* headline utama super bold */
         .headline-mega {
-            font-size: clamp(3.5rem, 10vw, 6.2rem);
+            font-size: clamp(3.5rem, 10vw, 6rem);
             font-weight: 900;
-            line-height: 1.05;
+            line-height: 1.08;
             letter-spacing: -0.03em;
             color: white;
-            margin-bottom: 1.6rem;
+            margin-bottom: 1.5rem;
             text-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
@@ -175,23 +168,22 @@
         }
 
         .desc-killer {
-            font-size: clamp(1rem, 2.3vw, 1.4rem);
+            font-size: clamp(1rem, 2.2vw, 1.35rem);
             line-height: 1.55;
             color: #B9C7D9;
             max-width: 650px;
-            margin: 0 auto 2.8rem auto;
+            margin: 0 auto 2.5rem auto;
             font-weight: 450;
             backdrop-filter: blur(3px);
         }
 
-        /* cta group dengan efek glassmorphism */
         .cta-super {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
             gap: 1.5rem;
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
         }
 
         .btn-ultimate {
@@ -248,21 +240,20 @@
             color: white;
         }
 
-        /* stats dengan efek hologram */
         .stats-hologram {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 2.2rem;
-            margin-bottom: 4.5rem;
+            gap: 2rem;
+            margin-bottom: 3.5rem;
         }
 
         .stat-card-glow {
             background: rgba(5, 12, 25, 0.65);
             backdrop-filter: blur(12px);
             border-radius: 2rem;
-            padding: 0.9rem 2rem;
-            min-width: 140px;
+            padding: 0.8rem 1.8rem;
+            min-width: 130px;
             text-align: center;
             border: 1px solid rgba(56, 189, 248, 0.25);
             transition: all 0.3s;
@@ -276,7 +267,7 @@
         }
 
         .stat-number-mega {
-            font-size: 2.4rem;
+            font-size: 2.2rem;
             font-weight: 800;
             background: linear-gradient(145deg, #FEF08A, #2DD4BF);
             background-clip: text;
@@ -286,7 +277,7 @@
         }
 
         .stat-label-cool {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -294,24 +285,30 @@
             margin-top: 6px;
         }
 
-        /* feature card premium dgn border gradient animasi */
+        /* FEATURE CARDS - PERFECTLY ALIGNED & BALANCED */
         .feature-showcase {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 2rem;
+            align-items: stretch;
+            gap: 1.8rem;
+            margin-top: 0.5rem;
         }
 
         .card-3d {
+            flex: 1;
+            min-width: 260px;
+            max-width: 320px;
             background: rgba(8, 16, 30, 0.7);
             backdrop-filter: blur(16px);
             border-radius: 2rem;
             padding: 2rem 1.6rem;
-            width: 280px;
             border: 1px solid rgba(255,255,255,0.08);
             position: relative;
-            transition: all 0.4s;
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .card-3d::before {
@@ -330,26 +327,31 @@
         }
 
         .card-3d:hover::before {
-            opacity: 0.8;
+            opacity: 0.9;
         }
 
         .card-3d:hover {
-            transform: translateY(-12px);
-            background: rgba(20, 35, 55, 0.85);
+            transform: translateY(-8px);
+            background: rgba(20, 35, 55, 0.88);
             border-color: transparent;
         }
 
         .icon-3d {
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(125deg, #1E293B, #0F172A);
+            width: 58px;
+            height: 58px;
+            background: linear-gradient(135deg, #1E293B, #0F172A);
             border-radius: 1.3rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.4rem;
             border: 0.5px solid rgba(56,189,248,0.5);
-            box-shadow: 0 10px 15px -8px black;
+            box-shadow: 0 10px 20px -8px rgba(0,0,0,0.4);
+            transition: transform 0.3s;
+        }
+
+        .card-3d:hover .icon-3d {
+            transform: scale(1.05);
         }
 
         .icon-3d i {
@@ -359,18 +361,19 @@
 
         .card-title-x {
             font-weight: 800;
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             color: #F8FAFC;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.7rem;
+            letter-spacing: -0.2px;
         }
 
         .card-desc-premium {
             font-size: 0.85rem;
             color: #B3C5E0;
-            line-height: 1.5;
+            line-height: 1.55;
+            flex: 1;
         }
 
-        /* scroll animation */
         .fade-up-mantap {
             opacity: 0;
             transform: translateY(35px);
@@ -384,22 +387,35 @@
 
         @media (max-width: 768px) {
             .container-mantap {
-                padding: 2rem 1.3rem 4rem;
+                padding: 2rem 1.3rem 3rem;
             }
             .card-3d {
-                width: 100%;
-                max-width: 320px;
+                min-width: 100%;
+                max-width: 100%;
             }
             .stat-card-glow {
-                min-width: 110px;
+                min-width: 100px;
                 padding: 0.6rem 1rem;
             }
             .stat-number-mega {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
             .btn-ultimate, .btn-glass-premium {
                 padding: 0.8rem 1.6rem;
                 font-size: 0.9rem;
+            }
+            .feature-showcase {
+                gap: 1.2rem;
+            }
+        }
+
+        /* tablet landscape */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .card-3d {
+                min-width: 280px;
+            }
+            .feature-showcase {
+                gap: 1.2rem;
             }
         }
     </style>
@@ -416,9 +432,7 @@
             <!-- badge raja digital -->
             <div class="fade-up-mantap" style="text-align: center;">
                 <div class="badge-elite">
-                    <i class="fas fa-crown"></i>
-                    <span>Terdepan dalam Digitalisasi RT/RW</span>
-                    <i class="fas fa-bolt" style="color:#2DD4BF;"></i>
+                    <span>⚡ Lurahgo Semakin Canggih!</span>
                 </div>
             </div>
 
@@ -426,7 +440,7 @@
             <div class="fade-up-mantap" style="text-align: center; transition-delay: 0.05s;">
                 <h1 class="headline-mega">
                     Lurahgo.id<br>
-                    <span class="gradient-king"> Ekosistem Digital RT/RW</span>
+                    <span class="gradient-king"> #WebsiteRajaCanggih </span>
                 </h1>
             </div>
 
@@ -450,7 +464,7 @@
                 </div>
             </div>
 
-            <!-- stats yang bikin melongo -->
+            <!-- stats hologram -->
             <div class="fade-up-mantap" style="transition-delay: 0.3s;">
                 <div class="stats-hologram">
                     <div class="stat-card-glow">
@@ -468,45 +482,56 @@
                 </div>
             </div>
 
-            <!-- fitur canggih dengan efek border gradient -->
+            <!-- FITUR CARD - 3 KOLOM RAPI, SEIMBANG, PROPORSIONAL -->
             <div class="fade-up-mantap" style="transition-delay: 0.4s;">
                 <div class="feature-showcase">
-                <div class="card-3d">
+                    <!-- Card 1: Manajemen RT/RW Pintar -->
+                    <div class="card-3d">
                         <div class="icon-3d">
                             <i class="fas fa-map-marked-alt"></i>
                         </div>
                         <div class="card-title-x">Manajemen RT/RW Pintar</div>
-                        <div class="card-desc-premium">Pantau & kelola data warga, KK, mutasi, hingga struktur RT/RW secara terintegrasi dalam satu genggaman.</div>
+                        <div class="card-desc-premium">
+                            Pantau & kelola data warga, KK, mutasi, hingga struktur RT/RW secara terintegrasi dalam satu genggaman.
+                        </div>
                     </div>
+                    
+                    <!-- Card 2: Blockchain Vault -->
                     <div class="card-3d">
                         <div class="icon-3d">
                             <i class="fas fa-lock"></i>
                         </div>
                         <div class="card-title-x">Blockchain Vault</div>
-                        <div class="card-desc-premium">Keamanan data terenkripsi & sistem voting digital tak tertandingi.</div>
+                        <div class="card-desc-premium">
+                            Keamanan data terenkripsi & sistem voting digital tak tertandingi. Perlindungan maksimal untuk setiap transaksi data warga.
+                        </div>
                     </div>
+                    
+                    <!-- Card 3: Komando Pusat -->
                     <div class="card-3d">
                         <div class="icon-3d">
                             <i class="fas fa-satellite-dish"></i>
                         </div>
                         <div class="card-title-x">Komando Pusat</div>
-                        <div class="card-desc-premium">Integrasi lintas desa, kelurahan, hingga kecamatan dalam 1 dashboard.</div>
+                        <div class="card-desc-premium">
+                            Integrasi lintas desa, kelurahan, hingga kecamatan dalam 1 dashboard. Kawal kebijakan dari hulu ke hilir secara real-time.
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <!-- bonus: modern pulse line -->
-            <div style="text-align: center; margin-top: 3rem; opacity: 0.6;">
+            <!-- modern pulse line -->
+            <div style="text-align: center; margin-top: 2.5rem; opacity: 0.5;">
                 <div style="width: 60px; height: 2px; background: linear-gradient(90deg, transparent, #2DD4BF, transparent); margin: 0 auto;"></div>
             </div>
         </div>
+        
         <!-- glow bottom element -->
         <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 70px; background: linear-gradient(to top, #000000, transparent); pointer-events: none; z-index: 15;"></div>
     </section>
 
     <script>
         (function() {
-            // Intersection observer untuk efek fade up wow
             const itemsToReveal = document.querySelectorAll('.fade-up-mantap');
             
             const revealObserver = new IntersectionObserver((entries) => {
@@ -516,11 +541,10 @@
                         revealObserver.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.2, rootMargin: "0px 0px -10px 0px" });
+            }, { threshold: 0.15, rootMargin: "0px 0px -10px 0px" });
             
             itemsToReveal.forEach(el => revealObserver.observe(el));
             
-            // tambahan efek kece: jika sudah di load paksa untuk yang keliatan
             const forceVisible = () => {
                 itemsToReveal.forEach(el => {
                     const rect = el.getBoundingClientRect();
@@ -533,7 +557,7 @@
             window.addEventListener('load', forceVisible);
             setTimeout(forceVisible, 200);
             
-            // effect mouse interaksi (buat keren)
+            // effect mouse interaksi
             const heroSection = document.querySelector('.hero-banget');
             if(heroSection) {
                 heroSection.addEventListener('mousemove', (e) => {
@@ -548,7 +572,6 @@
                 });
             }
             
-            // fallback animation untuk stat gradient
             const statNumbers = document.querySelectorAll('.stat-number-mega');
             statNumbers.forEach(stat => {
                 stat.style.backgroundSize = '200% auto';
@@ -566,7 +589,6 @@
         body {
             background: #010101;
         }
-        /* smooth */
         .card-3d, .btn-ultimate, .btn-glass-premium, .stat-card-glow, .badge-elite {
             will-change: transform;
         }

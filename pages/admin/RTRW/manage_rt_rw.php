@@ -144,7 +144,7 @@ $photo_path = get_profile_photo_path($r['profile_photo'] ?? '');
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div class="flex space-x-1">
-                            <a href="edit_rt.php?id=<?php echo $r['id']; ?>" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-xs flex items-center">
+                            <a href="edit_rt?id=<?php echo $r['id']; ?>" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-xs flex items-center">
                                 <i class="fas fa-edit mr-1"></i>Edit
                             </a>
                             <form method="POST" class="inline" style="display:inline;">
