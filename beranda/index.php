@@ -27,6 +27,8 @@ $test_query = "SELECT * FROM testimonials WHERE name IS NOT NULL AND name != '' 
 $test_result = mysqli_query($conn, $test_query);
 $testimonials = $test_result ? mysqli_fetch_all($test_result, MYSQLI_ASSOC) : [];
 
+// If table schema uses `name` not `nama`, make page queries consistent
+
 // Get announcements
 $ann_query = "SELECT id, title, content, DATE_FORMAT(created_at, '%d %b %Y') as date FROM announcements ORDER BY created_at DESC LIMIT 6";
 $ann_result = mysqli_query($conn, $ann_query);
@@ -35,6 +37,7 @@ $announcements = $ann_result ? mysqli_fetch_all($ann_result, MYSQLI_ASSOC) : [];
 <!DOCTYPE html>
 <html lang="id">
 <head>
+  <script src="https://cdn.tailwindcss.com"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lurahgo.id — Platform Digital RT/RW</title>
@@ -43,7 +46,66 @@ $announcements = $ann_result ? mysqli_fetch_all($ann_result, MYSQLI_ASSOC) : [];
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="beranda/templatemo-622-clearwave.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+
   <style>
+    /* --- Testimonials styling fix (form jadi rapi & ga jelek) --- */
+    .testimonials-section{padding:40px 0;}
+    .testimonials-send-header h3{font-size:1.5rem;font-weight:900;color:var(--accent);margin:0 0 8px;}
+    .testimonials-send-header p{color:var(--text-2);margin:0 0 18px;line-height:1.6;}
+
+    #testimonialForm{background:rgba(255,255,255,.75);border:1px solid var(--accent-border);backdrop-filter:blur(10px);border-radius:20px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.06);}
+    #testimonialForm .form-row{display:grid;grid-template-columns:1fr;gap:14px;}
+    @media(min-width:768px){#testimonialForm .form-row{grid-template-columns:1fr 1fr;}}
+
+    #testimonialForm label{display:block;font-weight:800;color:var(--text-1);font-size:.95rem;margin:0 0 8px;}
+    #testimonialForm input[type="text"],
+    #testimonialForm textarea{
+      width:100%;
+      background:rgba(255,255,255,.9);
+      border:1px solid rgba(26,75,122,.25);
+      border-radius:14px;
+      padding:12px 14px;
+      color:var(--text-1);
+      outline:none;
+      transition:border-color .2s, box-shadow .2s;
+    }
+    #testimonialForm input[type="text"]:focus,
+    #testimonialForm textarea:focus{border-color:var(--accent-mid);box-shadow:0 0 0 4px rgba(46,127,199,.15);}
+    #testimonialForm textarea{resize:none;min-height:120px;}
+
+    .rating-stars{display:flex;gap:8px;align-items:center;margin-bottom:10px;}
+    .rating-stars .star{
+      cursor:pointer;
+      font-size:1.7rem;
+      line-height:1;
+      color:#d1d5db;
+      transition:transform .12s ease, color .12s ease;
+      user-select:none;
+    }
+    .rating-stars .star:hover{transform:translateY(-1px);color:var(--accent-mid);}
+    .rating-stars .star.fas{color:#f59e0b;}
+
+    #testimonialForm button[type="submit"]{
+      margin-top:14px;
+      width:100%;
+      border:0;
+      border-radius:16px;
+      padding:12px 14px;
+      background:var(--accent);
+      color:#fff;
+      font-weight:900;
+      cursor:pointer;
+      transition:background .2s, transform .12s ease;
+    }
+    #testimonialForm button[type="submit"]:hover{background:var(--accent-mid);transform:translateY(-1px);}
+
+    .testimonial-message{margin:14px 0;padding:12px 14px;border-radius:14px;font-weight:800;}
+    .testimonial-message.success{background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#16a34a;}
+    .testimonial-message.error{background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.25);color:#dc2626;}
+
     /* Override accent colors to match Lurahgo branding */
     :root {
       --accent: #1A4B7A;
@@ -236,7 +298,7 @@ $announcements = $ann_result ? mysqli_fetch_all($ann_result, MYSQLI_ASSOC) : [];
 
   <!-- ── MOBILE MENU ── -->
   <div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Navigation">
-    <a href="#screens">Aplikasi</a>
+    <a href="#screens">Gallery</a>
     <a href="#features">Fitur</a>
     <a href="#pricing">Paket</a>
     <a href="#testimonials">Testimoni</a>
@@ -253,15 +315,52 @@ $announcements = $ann_result ? mysqli_fetch_all($ann_result, MYSQLI_ASSOC) : [];
     <div class="nav-inner">
       <a href="/" class="nav-logo">Lurahgo<span>.id</span></a>
       <ul class="nav-links" role="list">
-        <li><a href="#screens">Aplikasi</a></li>
+        <li><a href="#screens">Gallery</a></li>
         <li><a href="#features">Fitur</a></li>
         <li><a href="#pricing">Paket</a></li>
         <li><a href="#testimonials">Testimoni</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
-      <div class="nav-cta">
+                <div class="nav-cta">
         <?php if (isset($_SESSION['user_id'])): ?>
-          <a href="dashboard_<?php echo $_SESSION['role']; ?>" class="btn-primary">Dashboard</a>
+          <div class="user-dropdown" style="position:relative;display:inline-block;">
+            <?php
+              $avatar = $user && !empty($user['profile_photo']) ? $user['profile_photo'] : 'uploads/profiles/default-avatar.png';
+              $uname = $user['username'] ?? 'User';
+            ?>
+            <button type="button" class="btn-primary" style="display:flex;align-items:center;gap:10px;padding:10px 14px;">
+              <img src="<?php echo htmlspecialchars($avatar); ?>" alt="Profile" style="width:24px;height:24px;border-radius:50%;object-fit:cover;" />
+              <span><?php echo htmlspecialchars($uname); ?></span>
+              <span style="opacity:.8;">▾</span>
+            </button>
+            <div class="user-dropdown-menu" style="display:none;position:absolute;right:0;top:48px;min-width:210px;background:#fff;border:1px solid var(--accent-border);border-radius:14px;box-shadow:0 18px 60px rgba(0,0,0,.12);padding:8px;z-index:50;">
+              <a href="dashboard_<?php echo $_SESSION['role']; ?>" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:#0f172a;text-decoration:none;">Dashboard</a>
+              <a href="account/settings" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:#0f172a;text-decoration:none;">Settings</a>
+              <a href="account/settings" data-logout="1" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:#b91c1c;text-decoration:none;opacity:1;font-weight:800;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);">Log out</a>
+            </div>
+          </div>
+
+          <script>
+            (function(){
+              const root = document.querySelector('.user-dropdown');
+              if(!root) return;
+              const btn = root.querySelector('button');
+              const menu = root.querySelector('.user-dropdown-menu');
+              btn.addEventListener('click', function(){
+                const open = menu.style.display === 'block';
+                menu.style.display = open ? 'none' : 'block';
+              });
+              document.addEventListener('click', function(e){
+                if(!root.contains(e.target)) menu.style.display = 'none';
+              });
+              const logoutLink = root.querySelector('[data-logout="1"]');
+              logoutLink.addEventListener('click', async function(e){
+                e.preventDefault();
+                // project logout route seems to be plain "logout" (as used in layouts)
+                window.location.href = 'logout';
+              });
+            })();
+          </script>
         <?php else: ?>
           <a href="login" class="btn-ghost">Masuk</a>
           <a href="register" class="btn-primary">Daftar Gratis</a>
@@ -462,8 +561,8 @@ $announcements = $ann_result ? mysqli_fetch_all($ann_result, MYSQLI_ASSOC) : [];
       <div class="feature-row reverse">
         <div class="feature-content reveal">
           <div class="feature-number">02 — Otomatisasi Cerdas</div>
-          <h3 class="feature-title">Rutin yang berjalan<br><em>sendiri</em></h3>
-          <p class="feature-desc">Bangun alur otomatisasi dengan bahasa natural. Lurahgo.id memahami maksud Anda dan menyarankan langkah berikutnya — tanpa perlu diagram flowchart.</p>
+          <h3 class="feature-title">Otomatisasi untuk RT/RW<br><em>yang rapi</em></h3>
+          <p class="feature-desc">Otomatisasi aktivitas RT/RW: notifikasi warga, pengingat agenda, dan rekap berjalan tanpa ribet. Semua terhubung ke alur kerja harian.</p>
           <div class="feature-checklist">
             <div class="feature-check"><div class="check-icon">✓</div><span>Notifikasi otomatis ke warga</span></div>
             <div class="feature-check"><div class="check-icon">✓</div><span>500+ template pemicu siap pakai</span></div>
@@ -727,75 +826,196 @@ $announcements = $ann_result ? mysqli_fetch_all($ann_result, MYSQLI_ASSOC) : [];
     </div>
   </section>
 
-  <!-- ── TESTIMONIALS ── -->
-  <section class="testimonials-section" id="testimonials">
-    <div class="container">
-      <div class="testimonials-header">
-        <div class="section-label reveal">Testimoni</div>
-        <h2 class="section-title reveal reveal-delay-1">Pengguna yang <em>puas</em></h2>
-        <p class="section-sub reveal reveal-delay-2">Jangan percaya kata kami — inilah yang dikatakan pengguna setelah 90 hari.</p>
-      </div>
-      <div class="testimonials-grid">
-        <?php if (!empty($testimonials)): ?>
-          <?php foreach (array_slice($testimonials, 0, 5) as $i => $t): ?>
-            <div class="testimonial-card <?php echo $i === 0 ? 'tall' : ''; ?> reveal reveal-delay-<?php echo ($i % 3) + 1; ?>">
-              <div class="testimonial-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-              <p class="testimonial-quote">"<?php echo htmlspecialchars(substr($t['description'], 0, 200)); ?><?php echo strlen($t['description']) > 200 ? '...' : ''; ?>"</p>
-              <div class="testimonial-author">
-                <div class="author-avatar"><?php echo strtoupper(substr($t['name'], 0, 1)); ?></div>
-                <div>
-                  <div class="author-name"><?php echo htmlspecialchars($t['name']); ?></div>
-                  <div class="author-role">Pengguna Lurahgo.id</div>
+  <!-- ── TESTIMONIALS (inlined from beranda/testimonials.php) ── -->
+<?php
+$has_testimoni = false;
+
+$user_id = $_SESSION['user_id'] ?? null;
+if ($user_id) {
+    $stmt = mysqli_prepare($conn, 'SELECT COUNT(*) as count FROM testimonials WHERE user_id = ?');
+    mysqli_stmt_bind_param($stmt, 'i', $user_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($result);
+    $has_testimoni = ($row['count'] ?? 0) > 0;
+    mysqli_stmt_close($stmt);
+}
+?>
+
+<section class="testimonials-section" id="testimonials">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="testimonials-header text-center mb-12">
+            <div class="testimonials-label inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-[var(--accent)] bg-[var(--accent-ghost)] border border-[var(--accent-border)] px-4 py-2 rounded-full">
+                Rating & Testimoni
+            </div>
+            <h2 class="mt-4 text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-1)]">
+                Rating & Testimoni Pengguna
+            </h2>
+            <p class="testimonials-sub mt-4 text-[var(--text-2)] max-w-xl mx-auto leading-relaxed">
+                Dengar pengalaman warga—langsung dari RT/RW yang sudah pakai Lurahgo.id.
+            </p>
+        </div>
+
+        <div id="testimonials-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<?php
+$stmt = mysqli_prepare($conn, 'SELECT * FROM testimonials WHERE name IS NOT NULL AND name != "" AND description IS NOT NULL AND description != "" ORDER BY created_at DESC LIMIT 6');
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+
+while ($row = mysqli_fetch_assoc($result)) {
+    $nama = $row['name'] ?? 'Anonymous';
+    $pesan = $row['description'] ?? 'No description provided.';
+    $rating = (int)($row['rating'] ?? 0);
+
+    $avatar = 'https://randomuser.me/api/portraits/' . ($rating % 2 ? 'men' : 'women') . '/' . rand(1, 99) . '.jpg';
+
+    // Optional: avatar berdasarkan username (kalau nama disimpan sama seperti username)
+    $safe_name = mysqli_real_escape_string($conn, $nama);
+    $user_result = mysqli_query($conn, "SELECT profile_photo FROM users WHERE username = '" . $safe_name . "' LIMIT 1");
+    if ($user_row = mysqli_fetch_assoc($user_result)) {
+        $user_photo = $user_row['profile_photo'] ?? '';
+        if (!empty($user_photo)) {
+            $localAvatar = '../account/uploads/profiles/' . $user_photo;
+            if (file_exists($localAvatar)) {
+                $avatar = $localAvatar;
+            } else {
+                $avatar = $user_photo;
+            }
+        }
+    }
+
+    $rating_stars = '';
+    for ($i = 1; $i <= 5; $i++) {
+        $rating_stars .= ($i <= $rating)
+            ? '<i class="fas fa-star"></i>'
+            : '<i class="far fa-star"></i>';
+    }
+
+    $date = date('d M Y', strtotime($row['created_at'] ?? time()));
+
+    echo '<div class="testimonials-card bg-white/80 backdrop-blur border border-[var(--accent-border)] rounded-2xl p-6 shadow-[0_10px_40px_rgba(0,0,0,0.06)] hover:shadow-[0_18px_60px_rgba(0,0,0,0.10)] transition-all duration-300">
+            <div class="testimonials-author flex items-center gap-4">
+                <img class="testimonials-avatar w-12 h-12 rounded-full border-2 border-[var(--accent-border)] object-cover" src="' . htmlspecialchars($avatar) . '" alt="' . htmlspecialchars($nama) . '">
+                <div class="testimonials-info">
+                    <h4 class="text-[var(--text-1)] font-bold text-lg leading-snug">' . htmlspecialchars($nama) . '</h4>
+                    <p class="text-[var(--text-3)] text-sm mt-1">' . $date . '</p>
                 </div>
-              </div>
             </div>
-          <?php endforeach; ?>
-        <?php else: ?>
-          <div class="testimonial-card tall reveal">
-            <div class="testimonial-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-            <p class="testimonial-quote">"Lurahgo.id membantu kami mengelola data warga dengan lebih efisien. Tidak perlu lagi buku catatan manual, semuanya sudah digital."</p>
-            <div class="testimonial-author">
-              <div class="author-avatar">BR</div>
-              <div>
-                <div class="author-name">Budi Raharjo</div>
-                <div class="author-role">Ketua RT 05 · Sukamaju</div>
-              </div>
+            <p class="testimonials-quote mt-4 text-[var(--text-2)] leading-relaxed italic">" ' . htmlspecialchars($pesan) . ' "</p>
+            <div class="testimonials-stars mt-4 flex gap-1 text-yellow-400">' . $rating_stars . '</div>
+          </div>';
+}
+mysqli_stmt_close($stmt);
+?>
+        </div>
+
+<div class="testimonials-send mt-14">
+            <div class="testimonials-send-inner">
+                <div class="max-w-2xl mx-auto">
+                <?php if (!$has_testimoni): ?>
+                    <div class="testimonials-send-header">
+                        <h3>Kirim Testimoni Anda</h3>
+                        <p>Bantu kami improve layanan dengan rating dan feedback Anda!</p>
+                    </div>
+
+                    <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['testimonial_submit'])) {
+                        $nama = trim($_POST['name'] ?? ($_SESSION['username'] ?? 'Anonymous'));
+                        $rating = intval($_POST['rating'] ?? 0);
+                        $pesan = trim($_POST['description'] ?? '');
+                        $errors = [];
+
+                        if (empty($nama)) $errors[] = 'Nama wajib diisi.';
+                        if ($rating < 1 || $rating > 5) $errors[] = 'Rating harus 1-5.';
+                        if (empty($pesan)) $errors[] = 'Testimoni wajib diisi.';
+                        if (strlen($pesan) < 10) $errors[] = 'Testimoni minimal 10 karakter.';
+
+                        if (empty($errors)) {
+$stmt = mysqli_prepare($conn, 'INSERT INTO testimonials (name, rating, description, user_id, created_at) VALUES (?, ?, ?, ?, NOW())');
+                            mysqli_stmt_bind_param($stmt, 'sisi', $nama, $rating, $pesan, $user_id);
+
+                            if (mysqli_stmt_execute($stmt)) {
+                                $has_testimoni = true;
+                                echo '<div class="testimonial-message success"><i class="fas fa-check-circle mr-3"></i> Terima kasih atas testimoni Anda!</div>';
+                            } else {
+                                echo '<div class="testimonial-message error"><i class="fas fa-exclamation-triangle mr-3"></i> Gagal: ' . htmlspecialchars(mysqli_error($conn)) . '</div>';
+                            }
+
+                            mysqli_stmt_close($stmt);
+                        } else {
+                            echo '<div class="testimonial-message error"><i class="fas fa-exclamation-triangle mr-3"></i> ' . implode('<br>', $errors) . '</div>';
+                        }
+                    } ?>
+
+                    <form method="POST" id="testimonialForm">
+                        <input type="hidden" name="testimonial_submit" value="1">
+
+                        <div class="form-row">
+                            <div>
+                                <label>Nama</label>
+                                <input type="text" name="name" value="<?php echo htmlspecialchars($_SESSION['username'] ?? ''); ?>" readonly>
+                            </div>
+
+                            <div>
+                                <label>Rating</label>
+                                <div class="rating-stars">
+                                    <i class="far fa-star star" onclick="setRating(1)"></i>
+                                    <i class="far fa-star star" onclick="setRating(2)"></i>
+                                    <i class="far fa-star star" onclick="setRating(3)"></i>
+                                    <i class="far fa-star star" onclick="setRating(4)"></i>
+                                    <i class="far fa-star star" onclick="setRating(5)"></i>
+                                </div>
+                                <input type="hidden" id="rating" name="rating" value="0" required>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label>Testimoni Anda</label>
+                            <textarea name="description" rows="4" required placeholder="Ceritakan pengalaman Anda..."></textarea>
+                        </div>
+
+                        <button type="submit">Kirim Testimoni</button>
+                    </form>
+
+                <?php else: ?>
+                    <div class="text-center" style="padding: 36px 10px;">
+                        <i class="fas fa-star" style="color:#22c55e;font-size:3rem;display:block;margin-bottom:18px;"></i>
+                        <h3 style="font-size:1.6rem;font-weight:900;color:#16a34a;margin-bottom:10px;">Terima kasih!</h3>
+                        <p style="color:#64748b;max-width:520px;margin:0 auto;">Testimoni Anda tercatat dan akan ditampilkan setelah diverifikasi.</p>
+                    </div>
+                <?php endif; ?>
+                </div>
             </div>
-          </div>
-          <div class="testimonial-card reveal reveal-delay-1">
-            <div class="testimonial-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-            <p class="testimonial-quote">"Pengumuman otomatis ke WhatsApp warga sangat membantu. Tidak perlu lagi tempel kertas di papan pengumuman."</p>
-            <div class="testimonial-author">
-              <div class="author-avatar">AS</div>
-              <div>
-                <div class="author-name">Aminah Sari</div>
-                <div class="author-role">Ketua RW 03 · Merdeka</div>
-              </div>
-            </div>
-          </div>
-          <div class="testimonial-card reveal reveal-delay-2">
-            <div class="testimonial-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-            <p class="testimonial-quote">"Onboarding mudah banget. Dalam satu sore seluruh RT kami sudah terdaftar dan aktif menggunakan platform."</p>
-            <div class="testimonial-author">
-              <div class="author-avatar">DK</div>
-              <div>
-                <div class="author-name">Dedi Kurniawan</div>
-                <div class="author-role">Admin · Harmoni</div>
-              </div>
-            </div>
-          </div>
-        <?php endif; ?>
-      </div>
+        </div>
     </div>
-  </section>
+</section>
+
+<script>
+function setRating(stars) {
+    document.getElementById('rating').value = stars;
+    const starsIcons = document.querySelectorAll('.star');
+    starsIcons.forEach((icon, index) => {
+        if (index < stars) {
+            icon.classList.add('fas');
+            icon.classList.remove('far');
+            icon.classList.add('text-yellow-400');
+        } else {
+            icon.classList.add('far');
+            icon.classList.remove('fas');
+            icon.classList.remove('text-yellow-400');
+        }
+    });
+}
+</script>
+
+
 
   <!-- ── INTEGRATIONS ── -->
   <section class="integrations-section" id="integrations">
-    <div class="container">
+      <div class="container">
       <div class="integrations-header">
         <div class="section-label reveal">Integrasi</div>
-        <h2 class="section-title reveal reveal-delay-1">Terhubung dengan<br><em>sistem Anda</em></h2>
-        <p class="section-sub reveal reveal-delay-2">Integrasi satu klik dengan tools yang sudah Anda gunakan. Tanpa coding.</p>
+        <h2 class="section-title reveal reveal-delay-1">Terhubung untuk<br><em>RT/RW Anda</em></h2>
+        <p class="section-sub reveal reveal-delay-2">Integrasi satu klik untuk urusan RT/RW: pengumuman, notifikasi, rekap, dan dokumentasi. Tanpa coding.</p>
       </div>
       <div class="integrations-grid">
         <div class="integration-tile reveal"><div class="integration-name">WhatsApp</div></div>
