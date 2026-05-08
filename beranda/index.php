@@ -455,8 +455,8 @@ $announcements = $ann_result ? mysqli_fetch_all($ann_result, MYSQLI_ASSOC) : [];
           <div class="hero-float-badge">
             <div class="float-badge-icon">✦</div>
             <div class="float-badge-text">
-              <strong>Pengumuman Baru</strong>
-              <span>Kerja bakti minggu ini</span>
+            <strong>Pengumuman Baru</strong>
+              <span><?php echo htmlspecialchars($announcements[0]['title'] ?? ''); ?></span>
             </div>
           </div>
           <div class="hero-float-badge-2">
