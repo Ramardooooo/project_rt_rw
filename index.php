@@ -1,5 +1,3 @@
 <?php
 session_start();
-header("Location: auth/login.php");
-exit;
-?>
+include 'home.php';
