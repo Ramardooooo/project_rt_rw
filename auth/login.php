@@ -73,13 +73,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         :root {
-            --primary-red: #dc2626;
-            --primary-red-dark: #b91c1c;
-            --primary-red-light: #ef4444;
+            --primary-blue: #2563eb;
+            --primary-blue-dark: #1d4ed8;
+            --primary-blue-light: #3b82f6;
             --primary-navy: #1e3a8a;
             --primary-navy-dark: #172554;
-            --primary-navy-light: #2563eb;
-            --accent: #f97316;
+            --accent: #3b82f6;
             --success: #10b981;
             --warning: #f59e0b;
             --error: #ef4444;
@@ -97,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         body {
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             min-height: 100vh;
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -106,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             overflow: hidden;
         }
 
-        /* Background gradient merah & biru tua */
+        /* Background gradasi biru */
         .bg-gradient {
             position: fixed;
             top: 0;
@@ -114,9 +113,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(220, 38, 38, 0.25) 0%, transparent 50%),
-                radial-gradient(ellipse 60% 40% at 90% 10%, rgba(30, 58, 138, 0.3) 0%, transparent 50%),
-                radial-gradient(ellipse 50% 30% at 10% 90%, rgba(220, 38, 38, 0.15) 0%, transparent 50%);
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(37, 99, 235, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 90% 10%, rgba(30, 58, 138, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 30% at 10% 90%, rgba(59, 130, 246, 0.2) 0%, transparent 50%);
             z-index: 0;
         }
 
@@ -135,26 +134,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             position: absolute;
             width: 3px;
             height: 3px;
-            background: rgba(239, 68, 68, 0.4);
+            background: rgba(59, 130, 246, 0.4);
             border-radius: 50%;
             animation: particleFloat 15s linear infinite;
         }
-
-        .particle:nth-child(1) { left: 10%; animation-duration: 20s; }
-        .particle:nth-child(2) { left: 20%; animation-duration: 25s; animation-delay: 1s; }
-        .particle:nth-child(3) { left: 30%; animation-duration: 18s; animation-delay: 2s; }
-        .particle:nth-child(4) { left: 40%; animation-duration: 22s; animation-delay: 0.5s; }
-        .particle:nth-child(5) { left: 50%; animation-duration: 19s; animation-delay: 1.5s; }
-        .particle:nth-child(6) { left: 60%; animation-duration: 24s; animation-delay: 2.5s; }
-        .particle:nth-child(7) { left: 70%; animation-duration: 21s; animation-delay: 0.8s; }
-        .particle:nth-child(8) { left: 80%; animation-duration: 17s; animation-delay: 1.8s; }
-        .particle:nth-child(9) { left: 90%; animation-duration: 23s; animation-delay: 3s; }
-        .particle:nth-child(10) { left: 15%; animation-duration: 26s; animation-delay: 1.2s; }
-        .particle:nth-child(11) { left: 25%; animation-duration: 20s; animation-delay: 2.2s; }
-        .particle:nth-child(12) { left: 35%; animation-duration: 18s; animation-delay: 0.3s; }
-        .particle:nth-child(13) { left: 45%; animation-duration: 22s; animation-delay: 1.3s; }
-        .particle:nth-child(14) { left: 55%; animation-duration: 25s; animation-delay: 2.3s; }
-        .particle:nth-child(15) { left: 65%; animation-duration: 19s; animation-delay: 0.6s; }
 
         @keyframes particleFloat {
             0% { transform: translateY(100vh) scale(0); opacity: 0; }
@@ -184,10 +167,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Sisi kiri - Branding (Gradasi Merah ke Biru Tua) */
+        /* Sisi kiri - Branding (Biru) */
         .brand-side {
             flex: 1;
-            background: linear-gradient(135deg, var(--primary-red) 0%, var(--primary-navy) 50%, var(--primary-navy-dark) 100%);
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-navy) 50%, var(--primary-navy-dark) 100%);
             padding: 45px 35px;
             display: flex;
             flex-direction: column;
@@ -204,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             width: 200%;
             height: 200%;
             background: radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.08) 0%, transparent 40%),
-                        radial-gradient(circle at 70% 30%, rgba(249, 115, 22, 0.15) 0%, transparent 40%);
+                        radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 40%);
             animation: brandPulse 8s ease-in-out infinite;
         }
 
@@ -236,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         .logo-icon i { font-size: 28px; color: white; }
         .logo-text { font-size: 28px; font-weight: 700; color: white; letter-spacing: -0.5px; }
-        .logo-text span { color: #fca5a5; font-weight: 800; }
+        .logo-text span { color: #93c5fd; font-weight: 800; }
         
         .brand-text h2 { 
             font-size: 32px; 
@@ -269,7 +252,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             align-items: center;
             justify-content: center;
         }
-        .feature-icon i { font-size: 18px; color: #fca5a5; }
+        .feature-icon i { font-size: 18px; color: #93c5fd; }
         .feature-text { font-size: 13px; font-weight: 500; color: rgba(255, 255, 255, 0.9); }
 
         .brand-stats {
@@ -281,6 +264,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         .stat-value { font-size: 22px; font-weight: 700; color: white; }
         .stat-label { font-size: 10px; color: rgba(255, 255, 255, 0.6); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+        /* Sponsor Section */
+        .sponsor-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .sponsor-title {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sponsor-logos {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .sponsor-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 12px 4px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .sponsor-item i { font-size: 14px; color: #93c5fd; }
 
         /* Sisi kanan - Form */
         .form-side {
@@ -320,7 +337,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             outline: none;
             transition: all 0.2s ease;
         }
-        .form-input:focus { border-color: var(--primary-red); box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2); }
+        .form-input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); }
         
         .password-toggle {
             position: absolute;
@@ -365,7 +382,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             border: 2px solid var(--gray-700);
             border-radius: 5px;
         }
-        .custom-checkbox input:checked ~ .checkmark { background: var(--primary-red); border-color: var(--primary-red); }
+        .custom-checkbox input:checked ~ .checkmark { background: var(--primary-blue); border-color: var(--primary-blue); }
         .checkmark::after {
             content: "";
             position: absolute;
@@ -381,8 +398,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .custom-checkbox input:checked ~ .checkmark::after { transform: rotate(45deg) scale(1); }
         
         .checkbox-label { font-size: 13px; color: var(--gray-400); }
-        .forgot-link { font-size: 13px; color: #fca5a5; text-decoration: none; font-weight: 500; }
-        .forgot-link:hover { color: var(--primary-red); }
+        .forgot-link { font-size: 13px; color: #93c5fd; text-decoration: none; font-weight: 500; }
+        .forgot-link:hover { color: var(--primary-blue-light); }
 
         .submit-btn {
             width: 100%;
@@ -390,13 +407,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             font-size: 15px;
             font-weight: 600;
             color: white;
-            background: linear-gradient(135deg, var(--primary-red) 0%, var(--primary-navy) 100%);
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-navy) 100%);
             border: none;
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(220, 38, 38, 0.4); }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4); }
         .submit-btn.loading { opacity: 0.8; cursor: not-allowed; }
         
         .btn-content { display: flex; align-items: center; justify-content: center; gap: 10px; }
@@ -436,7 +453,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             cursor: pointer;
             transition: all 0.2s;
         }
-        .social-btn:hover { background: var(--gray-800); border-color: var(--primary-red); transform: translateY(-1px); }
+        .social-btn:hover { background: var(--gray-800); border-color: var(--primary-blue); transform: translateY(-1px); }
         
         .register-link {
             text-align: center;
@@ -444,8 +461,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             font-size: 13px;
             color: var(--gray-500);
         }
-        .register-link a { color: #fca5a5; font-weight: 600; text-decoration: none; }
-        .register-link a:hover { color: var(--primary-red); }
+        .register-link a { color: #93c5fd; font-weight: 600; text-decoration: none; }
+        .register-link a:hover { color: var(--primary-blue-light); }
 
         /* Toast Notification */
         .toast-container {
@@ -497,8 +514,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="bg-gradient"></div>
     <div class="particles">
-        <?php for($i = 1; $i <= 15; $i++): ?>
-        <div class="particle"></div>
+        <?php for($i = 1; $i <= 20; $i++): ?>
+        <div class="particle" style="left: <?= rand(1, 99) ?>%; animation-duration: <?= rand(12, 25) ?>s; animation-delay: <?= rand(0, 5) ?>s;"></div>
         <?php endfor; ?>
     </div>
 
@@ -516,7 +533,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <div class="container">
-        <!-- Sisi kiri - Branding Merah & Biru Tua -->
+        <!-- Sisi kiri - Branding Biru -->
         <div class="brand-side">
             <div class="brand-content">
                 <div class="brand-logo">
@@ -545,6 +562,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="stat-item"><div class="stat-value">200+</div><div class="stat-label">Desa Bermitra</div></div>
                     <div class="stat-item"><div class="stat-value">25K+</div><div class="stat-label">Pengguna Aktif</div></div>
                     <div class="stat-item"><div class="stat-value">99%</div><div class="stat-label">Kepuasan</div></div>
+                </div>
+                
+                <!-- SPONSOR SECTION -->
+                <div class="sponsor-section">
+                    <div class="sponsor-title">
+                        <i class='bx bx-trophy'></i>
+                        <span>DIDUKUNG OLEH</span>
+                    </div>
+                    <div class="sponsor-logos">
+                        <div class="sponsor-item">
+                            <i class='bx bx-code-alt'></i>
+                            <span>Kominfo RI</span>
+                        </div>
+                        <div class="sponsor-item">
+                            <i class='bx bx-building'></i>
+                            <span>Digital Desa</span>
+                        </div>
+                        <div class="sponsor-item">
+                            <i class='bx bx-cloud'></i>
+                            <span>Cloud.gov</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -614,10 +653,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </button>
                 </div>
             </form>
-
-            <p class="register-link">
-                Belum punya akun? <a href="register.php">Daftar sekarang</a>
-            </p>
         </div>
     </div>
 
