@@ -65,7 +65,7 @@ $announcements = $ann_result ? mysqli_fetch_all($ann_result, MYSQLI_ASSOC) : [];
     #testimonialForm textarea{
       width:100%;
       background:rgba(255,255,255,.9);
-      border:1px solid rgba(26,75,122,.25);
+      border:1px solid rgba(185,28,28,.25);
       border-radius:14px;
       padding:12px 14px;
       color:var(--text-1);
@@ -73,7 +73,7 @@ $announcements = $ann_result ? mysqli_fetch_all($ann_result, MYSQLI_ASSOC) : [];
       transition:border-color .2s, box-shadow .2s;
     }
     #testimonialForm input[type="text"]:focus,
-    #testimonialForm textarea:focus{border-color:var(--accent-mid);box-shadow:0 0 0 4px rgba(46,127,199,.15);}
+    #testimonialForm textarea:focus{border-color:var(--accent-mid);box-shadow:0 0 0 4px rgba(220,38,38,.15);}
     #testimonialForm textarea{resize:none;min-height:120px;}
 
     .rating-stars{display:flex;gap:8px;align-items:center;margin-bottom:10px;}
@@ -108,17 +108,17 @@ $announcements = $ann_result ? mysqli_fetch_all($ann_result, MYSQLI_ASSOC) : [];
 
     /* Override accent colors to match Lurahgo branding */
     :root {
-      --accent: #1A4B7A;
-      --accent-mid: #2E7FC7;
-      --accent-light: #5BA8E8;
-      --accent-ghost: rgba(26,75,122,0.08);
-      --accent-border: rgba(26,75,122,0.15);
+      --accent: #B91C1C;
+      --accent-mid: #DC2626;
+      --accent-light: #EF4444;
+      --accent-ghost: rgba(185,28,28,0.08);
+      --accent-border: rgba(185,28,28,0.15);
     }
     .pricing-card.featured {
       border-color: var(--accent);
     }
     .pricing-card.featured:hover {
-      box-shadow: 0 28px 80px rgba(26,75,122,0.35);
+      box-shadow: 0 28px 80px rgba(185,28,28,0.35);
     }
     .pricing-badge {
       background: var(--accent);
@@ -148,11 +148,11 @@ $announcements = $ann_result ? mysqli_fetch_all($ann_result, MYSQLI_ASSOC) : [];
       border-color: var(--accent-border);
     }
     .fv-pill.green {
-      background: rgba(26,75,122,0.12);
+      background: rgba(185,28,28,0.12);
       color: var(--accent);
     }
     .fv-pill.blue {
-      background: rgba(46,127,199,0.12);
+      background: rgba(220,38,38,0.12);
       color: var(--accent-mid);
     }
     .fv-card-bar-fill {
@@ -169,14 +169,14 @@ $announcements = $ann_result ? mysqli_fetch_all($ann_result, MYSQLI_ASSOC) : [];
       color: var(--accent);
     }
     .pricing-card.featured .pricing-check {
-      background: rgba(91,168,232,0.2);
-      border-color: rgba(91,168,232,0.4);
+      background: rgba(239,68,68,0.2);
+      border-color: rgba(239,68,68,0.4);
       color: var(--accent-light);
     }
     .pricing-card.featured .pricing-cta {
       background: var(--accent);
       border-color: var(--accent);
-      box-shadow: 0 6px 24px rgba(26,75,122,0.35);
+      box-shadow: 0 6px 24px rgba(185,28,28,0.35);
     }
     .pricing-card.featured .pricing-cta:hover {
       background: var(--accent-mid);
@@ -210,7 +210,7 @@ $announcements = $ann_result ? mysqli_fetch_all($ann_result, MYSQLI_ASSOC) : [];
     }
     .hero-float-badge-2 {
       background: var(--accent);
-      box-shadow: 0 8px 24px rgba(26,75,122,0.35);
+      box-shadow: 0 8px 24px rgba(185,28,28,0.35);
     }
     .carousel-btn {
       border-color: var(--accent-border);
@@ -269,13 +269,13 @@ $announcements = $ann_result ? mysqli_fetch_all($ann_result, MYSQLI_ASSOC) : [];
     }
     .cta-label {
       color: var(--accent-light);
-      border-color: rgba(91,168,232,0.3);
+      border-color: rgba(239,68,68,0.3);
     }
     .cta-title em {
       color: var(--accent-light);
     }
     .btn-cta-primary {
-      box-shadow: 0 8px 32px rgba(26,75,122,0.40);
+      box-shadow: 0 8px 32px rgba(185,28,28,0.40);
     }
     .mobile-menu .mobile-cta {
       background: var(--accent) !important;
@@ -469,43 +469,22 @@ $announcements = $ann_result ? mysqli_fetch_all($ann_result, MYSQLI_ASSOC) : [];
   </section>
 
   <!-- ── LOGO TICKER ── -->
+<?php
+$rt_list_query = "SELECT rt.nama_rt, rw.name as nama_rw FROM rt JOIN rw ON rt.id_rw = rw.id ORDER BY rt.nama_rt";
+$rt_list_result = mysqli_query($conn, $rt_list_query);
+$rt_list = $rt_list_result ? mysqli_fetch_all($rt_list_result, MYSQLI_ASSOC) : [];
+$total_rt_rw = count($rt_list);
+?>
   <div class="ticker-section">
-    <div class="ticker-label">Dipercaya oleh tim-tim di seluruh Indonesia</div>
+    <div class="ticker-label"><?php echo number_format($total_rt_rw); ?> RT/RW Terdaftar di Seluruh Indonesia</div>
     <div class="ticker-track-wrap">
       <div class="ticker-track">
-        <div class="ticker-item"><div class="ticker-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>RT 01/RW 03</div>
+<?php for ($i = 0; $i < 2; $i++): ?>
+<?php foreach ($rt_list as $rt): ?>
+        <div class="ticker-item"><div class="ticker-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div><?php echo htmlspecialchars($rt['nama_rt'] . '/' . $rt['nama_rw']); ?></div>
         <div class="ticker-dot"></div>
-        <div class="ticker-item"><div class="ticker-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>RW 05 Merdeka</div>
-        <div class="ticker-dot"></div>
-        <div class="ticker-item"><div class="ticker-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><polygon points="12,2 22,20 2,20"/></svg></div>RT 12 Sukamaju</div>
-        <div class="ticker-dot"></div>
-        <div class="ticker-item"><div class="ticker-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><path d="M4 4h16v12H4z M8 20h8"/></svg></div>RW 08 Harmoni</div>
-        <div class="ticker-dot"></div>
-        <div class="ticker-item"><div class="ticker-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><circle cx="12" cy="7" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>RT 07 Bahagia</div>
-        <div class="ticker-dot"></div>
-        <div class="ticker-item"><div class="ticker-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></div>RW 02 Sejahtera</div>
-        <div class="ticker-dot"></div>
-        <div class="ticker-item"><div class="ticker-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>RT 09 Damai</div>
-        <div class="ticker-dot"></div>
-        <div class="ticker-item"><div class="ticker-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>RW 11 Makmur</div>
-        <div class="ticker-dot"></div>
-        <!-- Set 2 duplicate -->
-        <div class="ticker-item"><div class="ticker-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>RT 01/RW 03</div>
-        <div class="ticker-dot"></div>
-        <div class="ticker-item"><div class="ticker-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>RW 05 Merdeka</div>
-        <div class="ticker-dot"></div>
-        <div class="ticker-item"><div class="ticker-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><polygon points="12,2 22,20 2,20"/></svg></div>RT 12 Sukamaju</div>
-        <div class="ticker-dot"></div>
-        <div class="ticker-item"><div class="ticker-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><path d="M4 4h16v12H4z M8 20h8"/></svg></div>RW 08 Harmoni</div>
-        <div class="ticker-dot"></div>
-        <div class="ticker-item"><div class="ticker-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><circle cx="12" cy="7" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>RT 07 Bahagia</div>
-        <div class="ticker-dot"></div>
-        <div class="ticker-item"><div class="ticker-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></div>RW 02 Sejahtera</div>
-        <div class="ticker-dot"></div>
-        <div class="ticker-item"><div class="ticker-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>RT 09 Damai</div>
-        <div class="ticker-dot"></div>
-        <div class="ticker-item"><div class="ticker-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>RW 11 Makmur</div>
-        <div class="ticker-dot"></div>
+<?php endforeach; ?>
+<?php endfor; ?>
       </div>
     </div>
   </div>
@@ -522,13 +501,13 @@ $announcements = $ann_result ? mysqli_fetch_all($ann_result, MYSQLI_ASSOC) : [];
       <!-- Feature 1 -->
       <div class="feature-row">
         <div class="feature-content reveal">
-          <div class="feature-number">01 — Dashboard Terpadu</div>
-          <h3 class="feature-title">Semua metrik, satu permukaan tenang</h3>
-          <p class="feature-desc">Tarik data dari berbagai sumber ke satu tampilan yang dapat dikomposisi. Bagikan dashboard live dengan stakeholder — tanpa ekspor, tanpa screenshot.</p>
+          <div class="feature-number">01 — Manajemen Data Warga</div>
+          <h3 class="feature-title">Data kependudukan<br><em>lengkap & terpusat</em></h3>
+          <p class="feature-desc">Kelola data warga dengan NIK, Kartu Keluarga, dan struktur RT/RW dalam satu sistem. Approval workflow memastikan data selalu akurat dan terverifikasi.</p>
           <div class="feature-checklist">
-            <div class="feature-check"><div class="check-icon">✓</div><span>Drag-and-drop widget builder</span></div>
-            <div class="feature-check"><div class="check-icon">✓</div><span>Sinkronisasi data real-time dari semua sumber</span></div>
-            <div class="feature-check"><div class="check-icon">✓</div><span>Sharing berbasis role dengan izin granular</span></div>
+            <div class="feature-check"><div class="check-icon">✓</div><span>Data warga lengkap dengan NIK & dokumen</span></div>
+            <div class="feature-check"><div class="check-icon">✓</div><span>Manajemen Kartu Keluarga (KK)</span></div>
+            <div class="feature-check"><div class="check-icon">✓</div><span>Approval workflow untuk verifikasi data</span></div>
           </div>
         </div>
         <div class="feature-visual reveal reveal-delay-1">
@@ -546,11 +525,11 @@ $announcements = $ann_result ? mysqli_fetch_all($ann_result, MYSQLI_ASSOC) : [];
               </div>
             </div>
             <div class="fv-card">
-              <div class="fv-card-label">Aktivitas Terbaru</div>
+              <div class="fv-card-label">Data Terbaru</div>
               <div class="fv-list" style="margin-top:8px">
-                <div class="fv-list-item"><span class="fv-list-name">Data warga baru ditambahkan</span><span class="fv-pill green">Selesai</span></div>
-                <div class="fv-list-item"><span class="fv-list-name">Review pengumuman pending</span><span class="fv-pill blue">Aktif</span></div>
-                <div class="fv-list-item"><span class="fv-list-name">Laporan bulanan</span><span class="fv-pill dim">Antri</span></div>
+                <div class="fv-list-item"><span class="fv-list-name">Data warga baru ditambahkan</span><span class="fv-pill green">Terverifikasi</span></div>
+                <div class="fv-list-item"><span class="fv-list-name">KK nomor 12345 diperbarui</span><span class="fv-pill blue">Review</span></div>
+                <div class="fv-list-item"><span class="fv-list-name">Data diri menunggu approval</span><span class="fv-pill dim">Pending</span></div>
               </div>
             </div>
           </div>
@@ -560,35 +539,35 @@ $announcements = $ann_result ? mysqli_fetch_all($ann_result, MYSQLI_ASSOC) : [];
       <!-- Feature 2 -->
       <div class="feature-row reverse">
         <div class="feature-content reveal">
-          <div class="feature-number">02 — Otomatisasi Cerdas</div>
-          <h3 class="feature-title">Otomatisasi untuk RT/RW<br><em>yang rapi</em></h3>
-          <p class="feature-desc">Otomatisasi aktivitas RT/RW: notifikasi warga, pengingat agenda, dan rekap berjalan tanpa ribet. Semua terhubung ke alur kerja harian.</p>
+          <div class="feature-number">02 — Komunikasi & Informasi</div>
+          <h3 class="feature-title">Pengumuman, notifikasi,<br><em>& dokumentasi</em></h3>
+          <p class="feature-desc">Sebarkan informasi penting ke warga melalui pengumuman, notifikasi otomatis, dan galeri dokumentasi kegiatan. Semua terhubung real-time.</p>
           <div class="feature-checklist">
-            <div class="feature-check"><div class="check-icon">✓</div><span>Notifikasi otomatis ke warga</span></div>
-            <div class="feature-check"><div class="check-icon">✓</div><span>500+ template pemicu siap pakai</span></div>
-            <div class="feature-check"><div class="check-icon">✓</div><span>Audit trail lengkap untuk setiap aksi</span></div>
+            <div class="feature-check"><div class="check-icon">✓</div><span>Pengumuman & informasi terkini</span></div>
+            <div class="feature-check"><div class="check-icon">✓</div><span>Notifikasi real-time ke warga</span></div>
+            <div class="feature-check"><div class="check-icon">✓</div><span>Galeri foto dokumentasi kegiatan</span></div>
           </div>
         </div>
         <div class="feature-visual reveal reveal-delay-1">
           <div class="feature-visual-inner">
             <div class="fv-card">
-              <div class="fv-card-label">Otomatisasi Aktif</div>
+              <div class="fv-card-label">Fitur Komunikasi</div>
               <div class="fv-list" style="margin-top:8px">
-                <div class="fv-list-item"><span class="fv-list-name">Digest mingguan → WhatsApp</span><span class="fv-pill green">Berjalan</span></div>
-                <div class="fv-list-item"><span class="fv-list-name">Iuran jatuh tempo → Alert</span><span class="fv-pill green">Berjalan</span></div>
-                <div class="fv-list-item"><span class="fv-list-name">Pengumuman → Notifikasi</span><span class="fv-pill blue">Aktif</span></div>
-                <div class="fv-list-item"><span class="fv-list-name">Sinkron laporan → Drive</span><span class="fv-pill dim">Jeda</span></div>
+                <div class="fv-list-item"><span class="fv-list-name">Pengumuman → Semua warga</span><span class="fv-pill green">Aktif</span></div>
+                <div class="fv-list-item"><span class="fv-list-name">Notifikasi approval data</span><span class="fv-pill green">Aktif</span></div>
+                <div class="fv-list-item"><span class="fv-list-name">Galeri dokumentasi kegiatan</span><span class="fv-pill blue">Aktif</span></div>
+                <div class="fv-list-item"><span class="fv-list-name">Testimoni & rating warga</span><span class="fv-pill green">Aktif</span></div>
               </div>
             </div>
             <div class="fv-row">
               <div class="fv-card fv-wide">
-                <div class="fv-card-label">Jam Hemat Bulan Ini</div>
-                <div class="fv-card-val">148h</div>
+                <div class="fv-card-label">Pengumuman Tersedia</div>
+                <div class="fv-card-val"><?php echo number_format(count($announcements)); ?></div>
                 <div class="fv-card-bar"><div class="fv-card-bar-fill" style="width:91%"></div></div>
               </div>
               <div class="fv-card">
-                <div class="fv-card-label">Alur</div>
-                <div class="fv-card-val">24</div>
+                <div class="fv-card-label">Galeri</div>
+                <div class="fv-card-val"><?php echo number_format(count($gallery_items)); ?></div>
               </div>
             </div>
           </div>
@@ -598,38 +577,34 @@ $announcements = $ann_result ? mysqli_fetch_all($ann_result, MYSQLI_ASSOC) : [];
       <!-- Feature 3 -->
       <div class="feature-row">
         <div class="feature-content reveal">
-          <div class="feature-number">03 — Kolaborasi Tim</div>
-          <h3 class="feature-title">Komentar, konteks,<br>dan <em>kejelasan</em></h3>
-          <p class="feature-desc">Annotasi apa saja, tetapkan tugas inline, dan selesaikan percakapan tanpa berpindah tab. Pekerjaan dan diskusi tetap bersama.</p>
+          <div class="feature-number">03 — Laporan & Mutasi</div>
+          <h3 class="feature-title">Pantau perubahan<br><em>& cetak laporan</em></h3>
+          <p class="feature-desc">Lacak mutasi warga (datang, pindah, meninggal) dan hasilkan laporan PDF siap cetak. Statistik real-time dengan chart distribusi.</p>
           <div class="feature-checklist">
-            <div class="feature-check"><div class="check-icon">✓</div><span>Komentar inline pada data apapun</span></div>
-            <div class="feature-check"><div class="check-icon">✓</div><span>Penugasan tugas ber-thread</span></div>
-            <div class="feature-check"><div class="check-icon">✓</div><span>Presence real-time dan cursor live</span></div>
+            <div class="feature-check"><div class="check-icon">✓</div><span>Laporan warga & KK siap cetak PDF</span></div>
+            <div class="feature-check"><div class="check-icon">✓</div><span>Tracking mutasi (datang/pindah/meninggal)</span></div>
+            <div class="feature-check"><div class="check-icon">✓</div><span>Statistik & chart distribusi warga</span></div>
           </div>
         </div>
         <div class="feature-visual reveal reveal-delay-1">
           <div class="feature-visual-inner">
             <div class="fv-row">
               <div class="fv-card fv-wide">
-                <div class="fv-card-label">Online Sekarang</div>
-                <div style="display:flex;gap:-4px;margin-top:6px">
-                  <div style="width:28px;height:28px;border-radius:50%;background:var(--accent);border:2px solid var(--surface);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff">A</div>
-                  <div style="width:28px;height:28px;border-radius:50%;background:var(--accent-mid);border:2px solid var(--surface);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;margin-left:-6px">K</div>
-                  <div style="width:28px;height:28px;border-radius:50%;background:#5A6B66;border:2px solid var(--surface);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;margin-left:-6px">M</div>
-                  <div style="width:28px;height:28px;border-radius:50%;background:var(--bg-alt);border:2px solid var(--surface);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-2);margin-left:-6px">+5</div>
-                </div>
+                <div class="fv-card-label">Total RT/RW Aktif</div>
+                <div class="fv-card-val"><?php echo number_format($rt_aktif); ?></div>
+                <div class="fv-card-bar"><div class="fv-card-bar-fill" style="width:75%"></div></div>
               </div>
               <div class="fv-card">
-                <div class="fv-card-label">Tugas Terbuka</div>
-                <div class="fv-card-val">37</div>
+                <div class="fv-card-label">Kegiatan</div>
+                <div class="fv-card-val"><?php echo number_format($kegiatan); ?></div>
               </div>
             </div>
             <div class="fv-card">
-              <div class="fv-card-label">Komentar Terbaru</div>
+              <div class="fv-card-label">Mutasi Terbaru</div>
               <div class="fv-list" style="margin-top:8px">
-                <div class="fv-list-item"><span class="fv-list-name">Alex → Grafik Q3 diperbarui</span><span class="fv-pill green">Selesai</span></div>
-                <div class="fv-list-item"><span class="fv-list-name">Kim → Perlu review</span><span class="fv-pill blue">Terbuka</span></div>
-                <div class="fv-list-item"><span class="fv-list-name">Maya → Disetujui & dikirim</span><span class="fv-pill green">Selesai</span></div>
+                <div class="fv-list-item"><span class="fv-list-name">Warga datang ke RT 03</span><span class="fv-pill green">Datang</span></div>
+                <div class="fv-list-item"><span class="fv-list-name">Warga pindah ke RW 05</span><span class="fv-pill blue">Pindah</span></div>
+                <div class="fv-list-item"><span class="fv-list-name">Laporan bulanan siap cetak</span><span class="fv-pill dim">PDF</span></div>
               </div>
             </div>
           </div>
