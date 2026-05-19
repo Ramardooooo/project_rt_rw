@@ -73,12 +73,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         :root {
-            --primary-blue: #2563eb;
-            --primary-blue-dark: #1d4ed8;
-            --primary-blue-light: #3b82f6;
-            --primary-navy: #1e3a8a;
-            --primary-navy-dark: #172554;
-            --accent: #3b82f6;
+            --primary-blue: #DC2626;
+            --primary-blue-dark: #B91C1C;
+            --primary-blue-light: #EF4444;
+            --primary-navy: #7F1D1D;
+            --primary-navy-dark: #450A0A;
+            --accent: #EF4444;
             --success: #10b981;
             --warning: #f59e0b;
             --error: #ef4444;
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         body {
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             min-height: 100vh;
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #7F1D1D 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -113,9 +113,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(37, 99, 235, 0.3) 0%, transparent 50%),
-                radial-gradient(ellipse 60% 40% at 90% 10%, rgba(30, 58, 138, 0.4) 0%, transparent 50%),
-                radial-gradient(ellipse 50% 30% at 10% 90%, rgba(59, 130, 246, 0.2) 0%, transparent 50%);
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(220, 38, 38, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 90% 10%, rgba(127, 29, 29, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 30% at 10% 90%, rgba(239, 68, 68, 0.2) 0%, transparent 50%);
             z-index: 0;
         }
 
@@ -134,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             position: absolute;
             width: 3px;
             height: 3px;
-            background: rgba(59, 130, 246, 0.4);
+            background: rgba(239, 68, 68, 0.4);
             border-radius: 50%;
             animation: particleFloat 15s linear infinite;
         }
@@ -187,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             width: 200%;
             height: 200%;
             background: radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.08) 0%, transparent 40%),
-                        radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 40%);
+                        radial-gradient(circle at 70% 30%, rgba(239, 68, 68, 0.15) 0%, transparent 40%);
             animation: brandPulse 8s ease-in-out infinite;
         }
 
@@ -219,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         .logo-icon i { font-size: 28px; color: white; }
         .logo-text { font-size: 28px; font-weight: 700; color: white; letter-spacing: -0.5px; }
-        .logo-text span { color: #93c5fd; font-weight: 800; }
+        .logo-text span { color: #FCA5A5; font-weight: 800; }
         
         .brand-text h2 { 
             font-size: 32px; 
@@ -252,7 +252,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             align-items: center;
             justify-content: center;
         }
-        .feature-icon i { font-size: 18px; color: #93c5fd; }
+        .feature-icon i { font-size: 18px; color: #FCA5A5; }
         .feature-text { font-size: 13px; font-weight: 500; color: rgba(255, 255, 255, 0.9); }
 
         .brand-stats {
@@ -297,7 +297,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             font-size: 11px;
             color: rgba(255, 255, 255, 0.7);
         }
-        .sponsor-item i { font-size: 14px; color: #93c5fd; }
+        .sponsor-item i { font-size: 14px; color: #FCA5A5; }
 
         /* Sisi kanan - Form */
         .form-side {
@@ -337,7 +337,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             outline: none;
             transition: all 0.2s ease;
         }
-        .form-input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); }
+        .form-input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2); }
         
         .password-toggle {
             position: absolute;
@@ -398,7 +398,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .custom-checkbox input:checked ~ .checkmark::after { transform: rotate(45deg) scale(1); }
         
         .checkbox-label { font-size: 13px; color: var(--gray-400); }
-        .forgot-link { font-size: 13px; color: #93c5fd; text-decoration: none; font-weight: 500; }
+        .forgot-link { font-size: 13px; color: #FCA5A5; text-decoration: none; font-weight: 500; }
         .forgot-link:hover { color: var(--primary-blue-light); }
 
         .submit-btn {
@@ -413,7 +413,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4); }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(220, 38, 38, 0.4); }
         .submit-btn.loading { opacity: 0.8; cursor: not-allowed; }
         
         .btn-content { display: flex; align-items: center; justify-content: center; gap: 10px; }
@@ -461,7 +461,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             font-size: 13px;
             color: var(--gray-500);
         }
-        .register-link a { color: #93c5fd; font-weight: 600; text-decoration: none; }
+        .register-link a { color: #FCA5A5; font-weight: 600; text-decoration: none; }
         .register-link a:hover { color: var(--primary-blue-light); }
 
         /* Toast Notification */
